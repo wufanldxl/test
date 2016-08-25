@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="base-1.0.css"/>
+		<style type="text/css">
+		html{
+		    font-size: 16px;
+		    font-family: "microsoft yahei";
+		}
+		.coloring{
+            -webkit-animation: coloring 1s 0s infinite both;
+            animation: coloring 1s 0s infinite both;
+        }
+
+        @-webkit-keyframes coloring {
+            0% {
+                color:#1A1A1A;
+            }            
+            33% {
+                color:#19b1a2;
+            }            
+            66% {
+                color:#FD5022;
+            }            
+            100% {
+                color:#1A1A1A;
+            }
+        }        
+        @keyframes coloring {
+            0% {
+                color:#1A1A1A;
+            }            
+            33% {
+                color:#19b1a2;
+            }            
+            66% {
+                color:#FD5022;
+            }            
+            100% {
+                color:#1A1A1A;
+            }
+        }
+        
+        .top{
+            height: 115px;            
+        }
+        .date{
+            margin-top: 1.625rem;
+            font-size: 1.25rem;
+            color: #636363;
+            text-align: center;
+        }
+        .num{
+            font-size: 1.875rem;
+            color: #636363;
+            text-align: center;
+        }
+        .num i{
+            font-size: 3.75rem;
+            color: #fd5022;
+            font-weight: bold;
+        }
+        .mark{
+            font-size: 5rem;
+            color: #1a1a1a;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+        .btn{
+            display: block;
+            width: 12.5rem;
+            height: 2.75rem;
+            margin: 4rem auto 0;
+            line-height: 2.75rem;
+            text-align: center;
+            font-size: 1rem;
+            color: #fff;
+            background: #cdcdcd;
+            border-radius: 0.25rem;
+        }
+        .time{
+            text-align: center;
+            font-size: 0.75rem;
+            color: #999;
+            line-height: 100%;
+            margin-top: 0.625rem;
+        }
+        .time span{
+            color: #fd5022;
+        }
+        .top div,.top img{
+            width: 100%;
+        }
+        .header{
+            height: 2.75rem;
+            background-color: #19b1a2;
+            border-bottom: .0325rem solid #15877c;
+        }
+        .header .back{
+            display: block;
+            width: 13.75%;
+            height: 2.75rem;
+            float: left;
+            background: url("back_icon.png") no-repeat center center;
+            background-size: .625rem 1.25rem;
+        }
+        .header .title{
+            width: 72.5%;
+            height: 2.75rem;
+            float: left;
+            line-height: 2.75rem;
+            font-size: 1rem;
+            color: #fff;
+            text-align: center;
+        }
+        .header .map{
+            display: block;
+            width: 13.75%;
+            height: 2.75rem;
+            float: left;
+            background: url("map.png") no-repeat center center;
+            background-size: 1.0625rem 1.0625rem;
+        }
+		</style>
+	</head>
+	<body>
+	    <div class="top">
+	        <div class="header">
+	            <a href="javascript:;" class="back"></a>
+	            <div class="title">望京摆渡车-东湖渠</div>
+	            <div class="map"></div>
+	        </div>
+	        <div class="ad">
+	        	<img src="ad1.jpg"/>
+	        </div>
+	    </div>
+	    <p class="date">2016年8月25日</p>
+	    <div class="num"><i>1</i>张</div>
+	    <input type="text" id="input" value="" /><input type="button" id="inbtn" value="揍你" />
+	    <div class="mark coloring">验证</div>
+	    <a href="javascript:;" class="btn">已验票</a>
+	    <p class="time">车票有效倒计时<span>30:00</span></p>
+	</body>
+	<script type="text/javascript">
+	    document.documentElement.style.fontSize=document.documentElement.offsetWidth*0.05+'px';
+	
+	
+	
+	
+		var timeT=document.querySelector('.time span');
+		var dateT=document.querySelector('.date');
+		var mark=document.querySelector('.mark');
+		var text=document.querySelector('#input');
+		var btn=document.querySelector('#inbtn');
+		
+		btn.onclick=function(){
+		    mark.innerHTML=text.value;
+		    mark.style.display='block';
+		    btn.style.display='none';
+		    text.style.display='none';
+		}
+		var date=new Date()
+		dateT.innerHTML=date.getFullYear()+'年'+(date.getMonth()+1)+'月'+date.getDate()+'日';
+		function toDou(num){
+		    return num<10?'0'+num:''+num;
+		}
+		var time=1800;
+		
+		function cd(){
+		    time--;
+		    var s=time;
+		    var m=parseInt(s/60);
+		    s%=60;
+		    timeT.innerHTML=m+':'+toDou(s);
+		}
+		
+		setInterval(cd,1000);
+	</script>
+</html>
