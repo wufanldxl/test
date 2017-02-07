@@ -3,33 +3,25 @@
     <head>
         <meta charset="UTF-8">
         <title></title>
+        <style type="text/css">
+        	label{
+        	    margin-right: 10px;
+        	}
+        	.res{
+        	    font-size: 80px;
+        	    font-family: "微软雅黑";
+        	    font-weight: bold;
+        	    text-align: center;
+        	    
+        	}
+        </style>
     </head>
     <body>
         
         <div class="checkbox">
-            <input type="checkbox" name="lr" id="lr" value="猎人" /><label for="lr">猎人</label>
             
-            <input type="checkbox" name="fs" id="fs" value="法师" /><label for="fs">法师</label>
-            
-            <input type="checkbox" name="qs" id="qs" value="骑士" /><label for="qs">骑士</label>
-            
-            <input type="checkbox" name="ms" id="ms" value="牧师" /><label for="ms">牧师</label>
-            
-            <input type="checkbox" name="dk" id="dk" value="死骑" /><label for="dk">死骑</label>
-            
-            <input type="checkbox" name="zs" id="zs" value="战士" /><label for="zs">战士</label>
-            
-            <input type="checkbox" name="ss" id="ss" value="术士" /><label for="ss">术士</label>
-            
-            <input type="checkbox" name="sm" id="sm" value="萨满" /><label for="sm">萨满</label>
-            
-            <input type="checkbox" name="dz" id="dz" value="盗贼" /><label for="dz">盗贼</label>
-            
-            <input type="checkbox" name="ws" id="ws" value="武僧" /><label for="ws">武僧</label>
-            
-            <input type="checkbox" name="dh" id="dh" value="恶魔猎手" /><label for="dh">恶魔猎手</label>
         </div>
-        <input type="checkbox" name="all" id="all" value="" /><label for="all">全选</label>
+        <input type="checkbox" name="all" id="all" value="" /><label for="all" class="sss">全选</label>
         <hr />
         <input type="button" name="" id="btn" value="我该玩那个" />
         <p class="res"></p>
@@ -38,29 +30,63 @@
                 return parseInt(n+Math.random()*(m-n));     
             }
         	
+        	function $qe(sel){
+                return document.querySelector(sel);
+            }
+        	
+        	var job=[
+                {'jobEn':'lr','jobName':'猎人'},
+                {'jobEn':'fs','jobName':'法师'},
+                {'jobEn':'qs','jobName':'骑士'},
+                {'jobEn':'ms','jobName':'牧师'},
+                {'jobEn':'dk','jobName':'死骑'},
+                {'jobEn':'zs','jobName':'战士'},
+                {'jobEn':'ss','jobName':'术士'},
+                {'jobEn':'sm','jobName':'萨满'},
+                {'jobEn':'dz','jobName':'盗贼'},
+                {'jobEn':'ws','jobName':'武僧'},
+                {'jobEn':'dh','jobName':'恶魔猎手'}
+            ];
+            
+            
+            function creatJob(job){
+                var chbox=$qe('.checkbox');
+                for(var i=0;i<job.length;i++){
+                    var c=document.createElement('input');
+                    c.type='checkbox';
+                    c.name=job[i].jobEn;
+                    c.id=job[i].jobEn;
+                    c.value=job[i].jobName;
+                    chbox.appendChild(c);
+                    var l=document.createElement('label');
+                    l.htmlFor=job[i].jobEn;
+                    l.innerHTML=job[i].jobName;
+                    chbox.appendChild(l);
+                }
+            }
+        	creatJob(job);
+        	
         	var cs=document.querySelectorAll('.checkbox [type=checkbox]');
         	
-        	function $qe(sel){
-        	    return document.querySelector(sel);
-        	}
+        	
         	
         	$qe('#all').onchange=function(){
         	    if(this.checked){
-        	        for(let i=0;i<cs.length;i++){
+        	        for(var i=0;i<cs.length;i++){
                         cs[i].checked=true;
                     }
         	    }else{
-        	        for(let i=0;i<cs.length;i++){
+        	        for(var i=0;i<cs.length;i++){
                         cs[i].checked=false;
                     }
         	    }
         	}
         	
         	var n=0;
-        	for(let i=0;i<cs.length;i++){
+        	for(var i=0;i<cs.length;i++){
         	    cs[i].onchange=function(){
         	        n=0;
-        	        for(let i=0;i<cs.length;i++){
+        	        for(var i=0;i<cs.length;i++){
         	            if(cs[i].checked){
                            n++;
                         }
@@ -75,7 +101,7 @@
         	
         	$qe('#btn').onclick=function(){
         	    var arr=[];
-        	    for(let i=0;i<cs.length;i++){
+        	    for(var i=0;i<cs.length;i++){
         	        if(cs[i].checked){
         	            arr.push(cs[i].value);
         	        }
@@ -85,7 +111,18 @@
         	        return;
         	    }
         	    
-        	    $qe('.res').innerText=arr[rnd(0,arr.length)];
+        	    var x=100;
+        	    function active(){      
+        	        if(x==0) return;
+        	        x--;
+        	        setTimeout(function(){
+        	            $qe('.res').innerText=arr[rnd(0,arr.length)];
+        	            $qe('.res').style.color='rgb('+rnd(0,255)+','+rnd(0,255)+','+rnd(0,255)+')';        	            
+        	            console.log(Math.abs(Math.pow(-1.01,x)*100))
+        	            active();
+        	        },Math.abs(Math.pow(-1.01,x)*50));
+        	    }        	    
+        	    active();
         	}
         	
         </script>
