@@ -322,21 +322,17 @@
                         $qe('.res').innerText=clan[x%clan.length].clanName+' '+job[x%job.length].jobName;
                         $qe('.res').style.color=jobColor(nj);
                         if(x==0){
-                            var resClan=clanArr[rnd(0,clanArr.length)];
-                            var resJobItem=[];
+                            //var resClan=clanArr[rnd(0,clanArr.length)];
+                            //var resJobItem=[];
+                            var resj=jobArr[rnd(0,jobArr.length)];
+                            var resClanItem=[];
                             for(var i=0;i<clan.length;i++){
-                                if(clan[i].clanEn==resClan.clanEn){
-                                    for(var j=0;j<clan[i].canJob.length;j++){
-                                        for(var k=0;k<jobArr.length;k++){
-                                            if(clan[i].canJob[j]==jobArr[k].jobEn){
-                                                resJobItem.push(jobArr[k])
-                                            }
-                                        }
-                                    }
-                                    break;
+                                if(clan[i].canJob.join('').indexOf(resj.jobEn)!=-1){
+                                    resClanItem.push(clan[i]);
                                 }
                             }
-                            var resj=resJobItem[rnd(0,resJobItem.length)];
+                            
+                            var resClan=resClanItem[rnd(0,resClanItem.length)];
                             $qe('.res').innerText=resClan.clanName+' '+resj.jobName;
                             $qe('.res').style.color=jobColor(resj.jobEn);
                             $qe('.icon').innerHTML='<img src="icon/'+resj.jobEn+'.png" />';
