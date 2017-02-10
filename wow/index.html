@@ -299,7 +299,11 @@
                 }
         	}
         	
+        	
+        	var bOff=false;
         	$qe('#btn').onclick=function(){
+        	    if(bOff) return;
+        	    bOff=!bOff;
         	    var clanArr=[];    //选中的clan
         	    var jobArr=[];    //选中job的项
         	    if($qe('.icon img')){
@@ -313,14 +317,19 @@
         	    }
         	    for(var i=0;i<clans.length;i++){
         	        if(clans[i].checked){
-                        clanArr.push({'clanEn':clans[i].name,'clanName':clans[i].value});
+        	            for(var j=0;j<clan.length;j++){
+        	                if(clans[i].name==clan[j].clanEn){
+        	                    clanArr.push(clan[j]);
+        	                }
+        	            }
+                        //clanArr.push({'clanEn':clans[i].name,'clanName':clans[i].value});
                     }
         	    }
         	    if(jobArr.length==0){
         	        alert('还没选呢!');
         	        return;
         	    }
-        	    
+        	    console.log(clanArr)
         	    var x=60;
         	    function active(){      
         	        if(x==0) return;
@@ -332,9 +341,9 @@
                         if(x==0){
                             var resj=jobArr[rnd(0,jobArr.length)];
                             var resClanItem=[];
-                            for(var i=0;i<clan.length;i++){
-                                if(clan[i].canJob.join('').indexOf(resj.jobEn)!=-1){
-                                    resClanItem.push(clan[i]);
+                            for(var i=0;i<clanArr.length;i++){
+                                if(clanArr[i].canJob.join('').indexOf(resj.jobEn)!=-1){
+                                    resClanItem.push(clanArr[i]);
                                 }
                             }
                             
@@ -342,6 +351,7 @@
                             $qe('.res').innerText=resClan.clanName+' '+resj.jobName;
                             $qe('.res').style.color=jobColor(resj.jobEn);
                             $qe('.icon').innerHTML='<img src="icon/'+resj.jobEn+'.png" />';
+                            bOff=!bOff;
                         }
         	            active();
         	        },Math.abs(Math.pow(-1.006,x)*70));
