@@ -167,18 +167,25 @@
                     l.innerHTML=job[i].jobName;
                     chbox.appendChild(l);
                 }
-                //$qe('#all-job').disabled=true;
+                
             }
             creatJob(job);
             
             //联选
             function checkAll(checks,all){
                 all.addEventListener('change',function(){
+                    var n=0;
                     if(this.checked){
                         for(var i=0;i<checks.length;i++){
                             if(checks[i].disabled==false){
+                                n++;
                                 checks[i].checked=true;
                             }
+                        }
+                        if(n==0){
+                            alert('没有符合的职业');
+                            this.checked=false;
+                            return false;
                         }
                     }else{
                         for(var i=0;i<checks.length;i++){
@@ -224,6 +231,7 @@
                     for(var j=0;j<cs.length;j++){
                         cs[j].disabled=true;
                         cs[j].checked=false;
+                        $qe('#all-job').checked=false;
                     }
                     for(var i=0;i<sel.length;i++){
                         (function(i){
@@ -322,8 +330,6 @@
                         $qe('.res').innerText=clan[x%clan.length].clanName+' '+job[x%job.length].jobName;
                         $qe('.res').style.color=jobColor(nj);
                         if(x==0){
-                            //var resClan=clanArr[rnd(0,clanArr.length)];
-                            //var resJobItem=[];
                             var resj=jobArr[rnd(0,jobArr.length)];
                             var resClanItem=[];
                             for(var i=0;i<clan.length;i++){
