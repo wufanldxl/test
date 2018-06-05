@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无缝</title>
+<style>
+*{margin:0; padding:0; list-style:none;}
+#box{width:600px; height:337px; margin:100px auto; overflow:hidden; position:relative; top:0; left:0;}
+#box a{position:absolute; width:80px; height:60px; text-align:center; line-height:60px; text-decoration:none; color:#fff; top:50%; margin-top:-30px; background:rgba(0,0,0,0.5); z-index:1; display:none;}
+#box a:hover{background:rgba(0,255,204,0.5);}
+#prev{left:0;}
+#next{right:0;}
+ul{overflow:hidden; position:absolute;top:0; left:0;}
+li{float:left; width:600px;}
+li img{width:100%;}
+ol{position:absolute; width:250px; bottom:10px; left:50%; margin-left:-125px;}
+ol li{width:30px; height:30px; background:rgba(102,102,102,1); border-radius:50%; margin:10px; cursor:pointer;}
+ol li.on{background:rgba(0,255,204,0.5);}
+</style>
+<script>
+var Tween={Linear:function(t,b,c,d){return c*t/d+b},Quad:{easeIn:function(t,b,c,d){return c*(t/=d)*t+b},easeOut:function(t,b,c,d){return -c*(t/=d)*(t-2)+b},easeInOut:function(t,b,c,d){if((t/=d/2)<1){return c/2*t*t+b}return -c/2*((--t)*(t-2)-1)+b}},Cubic:{easeIn:function(t,b,c,d){return c*(t/=d)*t*t+b},easeOut:function(t,b,c,d){return c*((t=t/d-1)*t*t+1)+b},easeInOut:function(t,b,c,d){if((t/=d/2)<1){return c/2*t*t*t+b}return c/2*((t-=2)*t*t+2)+b}},Quart:{easeIn:function(t,b,c,d){return c*(t/=d)*t*t*t+b},easeOut:function(t,b,c,d){return -c*((t=t/d-1)*t*t*t-1)+b},easeInOut:function(t,b,c,d){if((t/=d/2)<1){return c/2*t*t*t*t+b}return -c/2*((t-=2)*t*t*t-2)+b}},Quint:{easeIn:function(t,b,c,d){return c*(t/=d)*t*t*t*t+b},easeOut:function(t,b,c,d){return c*((t=t/d-1)*t*t*t*t+1)+b},easeInOut:function(t,b,c,d){if((t/=d/2)<1){return c/2*t*t*t*t*t+b}return c/2*((t-=2)*t*t*t*t+2)+b}},Sine:{easeIn:function(t,b,c,d){return -c*Math.cos(t/d*(Math.PI/2))+c+b},easeOut:function(t,b,c,d){return c*Math.sin(t/d*(Math.PI/2))+b},easeInOut:function(t,b,c,d){return -c/2*(Math.cos(Math.PI*t/d)-1)+b}},Expo:{easeIn:function(t,b,c,d){return(t==0)?b:c*Math.pow(2,10*(t/d-1))+b},easeOut:function(t,b,c,d){return(t==d)?b+c:c*(-Math.pow(2,-10*t/d)+1)+b},easeInOut:function(t,b,c,d){if(t==0){return b}if(t==d){return b+c}if((t/=d/2)<1){return c/2*Math.pow(2,10*(t-1))+b}return c/2*(-Math.pow(2,-10*--t)+2)+b}},Circ:{easeIn:function(t,b,c,d){return -c*(Math.sqrt(1-(t/=d)*t)-1)+b},easeOut:function(t,b,c,d){return c*Math.sqrt(1-(t=t/d-1)*t)+b},easeInOut:function(t,b,c,d){if((t/=d/2)<1){return -c/2*(Math.sqrt(1-t*t)-1)+b}return c/2*(Math.sqrt(1-(t-=2)*t)+1)+b}},Elastic:{easeIn:function(t,b,c,d,a,p){if(t==0){return b}if((t/=d)==1){return b+c}if(!p){p=d*0.3}if(!a||a<Math.abs(c)){a=c;var s=p/4}else{var s=p/(2*Math.PI)*Math.asin(c/a)}return -(a*Math.pow(2,10*(t-=1))*Math.sin((t*d-s)*(2*Math.PI)/p))+b},easeOut:function(t,b,c,d,a,p){if(t==0){return b}if((t/=d)==1){return b+c}if(!p){p=d*0.3}if(!a||a<Math.abs(c)){a=c;var s=p/4}else{var s=p/(2*Math.PI)*Math.asin(c/a)}return(a*Math.pow(2,-10*t)*Math.sin((t*d-s)*(2*Math.PI)/p)+c+b)},easeInOut:function(t,b,c,d,a,p){if(t==0){return b}if((t/=d/2)==2){return b+c}if(!p){p=d*(0.3*1.5)}if(!a||a<Math.abs(c)){a=c;var s=p/4}else{var s=p/(2*Math.PI)*Math.asin(c/a)}if(t<1){return -0.5*(a*Math.pow(2,10*(t-=1))*Math.sin((t*d-s)*(2*Math.PI)/p))+b}return a*Math.pow(2,-10*(t-=1))*Math.sin((t*d-s)*(2*Math.PI)/p)*0.5+c+b}},Back:{easeIn:function(t,b,c,d,s){if(s==undefined){s=1.70158}return c*(t/=d)*t*((s+1)*t-s)+b},easeOut:function(t,b,c,d,s){if(s==undefined){s=1.70158}return c*((t=t/d-1)*t*((s+1)*t+s)+1)+b},easeInOut:function(t,b,c,d,s){if(s==undefined){s=1.70158}if((t/=d/2)<1){return c/2*(t*t*(((s*=(1.525))+1)*t-s))+b}return c/2*((t-=2)*t*(((s*=(1.525))+1)*t+s)+2)+b}},Bounce:{easeIn:function(t,b,c,d){return c-Tween.Bounce.easeOut(d-t,0,c,d)+b},easeOut:function(t,b,c,d){if((t/=d)<(1/2.75)){return c*(7.5625*t*t)+b}else{if(t<(2/2.75)){return c*(7.5625*(t-=(1.5/2.75))*t+0.75)+b}else{if(t<(2.5/2.75)){return c*(7.5625*(t-=(2.25/2.75))*t+0.9375)+b}else{return c*(7.5625*(t-=(2.625/2.75))*t+0.984375)+b}}}},easeInOut:function(t,b,c,d){if(t<d/2){return Tween.Bounce.easeIn(t*2,0,c,d)*0.5+b}else{return Tween.Bounce.easeOut(t*2-d,0,c,d)*0.5+c*0.5+b}}}};
+window.onload=function(){
+	var oBox = document.getElementById('box');
+	var oUl = oBox.getElementsByTagName('ul')[0];
+	var aLi = oUl.children;
+	var oOl = oBox.getElementsByTagName('ol')[0];
+	var aBtn=  oOl.children;
+	var oPrev = document.getElementById('prev');
+	var oNext = document.getElementById('next');
+	oUl.innerHTML+=oUl.innerHTML;
+	oUl.style.width=aLi.length*aLi[0].offsetWidth+'px';
+	var W = oUl.offsetWidth/2;
+	var iNow=0;
+	var timer =null;
+	oBox.onmouseover=function(){
+		clearInterval(timer);
+		oPrev.style.display='block';
+		oNext.style.display='block';
+	};
+	oBox.onmouseout=function(){
+		timer = setInterval(function(){
+			fnNext();
+		},2000);
+		oPrev.style.display='none';
+		oNext.style.display='none';
+	};
+	for(var i=0;i<aBtn.length;i++){
+		(function(index){
+			aBtn[i].onclick=function(){
+				if(iNow%aBtn.length==0&&index==4){
+					iNow--;
+				}
+				if((iNow%aBtn.length==4||iNow==-1)&&index==0){
+					iNow++;
+				}
+				iNow=Math.floor(iNow/aBtn.length)*aBtn.length+index;
+				tab();
+			};
+		})(i);
+	}
+	function tab(){
+		document.title=iNow;
+		for(var i=0;i<aBtn.length;i++){
+			aBtn[i].className='';
+		}
+		if(iNow>0){
+			aBtn[iNow%aBtn.length].className='on';
+		}else{
+			aBtn[(iNow%aBtn.length+aBtn.length)%aBtn.length].className='on';
+		}
+		startMove(oUl,-iNow*aLi[0].offsetWidth);
+		//oUl.style.left=-iNow*aLi[0].offsetWidth+'px';
+	}
+	oPrev.onclick=function(){
+		iNow--;
+		tab();
+	};
+	oNext.onclick=fnNext;
+	function fnNext(){
+		iNow++;
+		tab();
+	}
+	
+	timer = setInterval(function(){
+		fnNext();
+	},2000);
+	
+	
+	var left = 0;
+	function startMove(obj,iTarget){
+		var start = left;
+		var dis = iTarget-start;
+		var count = Math.floor(700/30);
+		var n = 0;
+		clearInterval(obj.timer);
+		obj.timer = setInterval(function(){
+			n++;
+			left = Tween.Cubic.easeOut(700*n/count,start,dis,700);
+			if(left<0){
+				obj.style.left=left%W+'px';
+			}else{
+				obj.style.left=(left%W-W)%W+'px';
+			}
+			if(n==count){
+				clearInterval(obj.timer);
+			}
+		},30);
+	}
+	
+};
+</script>
+</head>
+
+<body>
+<div id="box">
+	<a href="javascript:;" id="prev">prev</a>
+	<a href="javascript:;" id="next">next</a>
+	<ul>
+    	<li><img src="img/0.jpg" /></li>
+    	<li><img src="img/1.jpg" /></li>
+    	<li><img src="img/2.jpg" /></li>
+    	<li><img src="img/3.jpg" /></li>
+    	<li><img src="img/4.jpg" /></li>
+    </ul>
+    <ol>
+    	<li class="on"></li>
+    	<li></li>
+    	<li></li>
+    	<li></li>
+    	<li></li>
+    </ol>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
