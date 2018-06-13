@@ -95,7 +95,7 @@ window.onload=function(){
 		clearInterval(obj.timer);
 		obj.timer = setInterval(function(){
 			n++;
-			left = Tween.Cubic.easeOut(700*n/count,start,dis,700);
+			left = Tween.Bounce.easeOut(700*n/count,start,dis,700);
 			if(left<0){
 				obj.style.left=left%W+'px';
 			}else{
