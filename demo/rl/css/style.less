@@ -1,0 +1,31 @@
+@red: #f90;
+.box {color: @red;}
+.div {background: @red;}
+
+.bor (@col;@len:6px){
+    border-top: @len solid @col;
+    border-bottom: @len solid @col;
+}
+
+.box{
+    background: #ccc;
+    .bor(3px,#ccc)
+}
+.cc{
+    .bor(5px,@red)
+}
+
+.box{
+    p{
+        @ccc:#ccc;
+        font-size: 12px;
+        i{
+            .bor(3px,@ccc)
+        }
+    }    
+}
+.box{
+    p{
+     .bor(@red)   
+    }
+}

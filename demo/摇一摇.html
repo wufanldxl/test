@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<style>
+/*base*/
+	body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;}
+	a{text-decoration:none;color:#000;}
+	ol,ul,dl{list-style:none;}
+	b,strong{font-weight:normal;}
+	h1,h2,h3,h4,h5,h6{font-size:12px;font-weight:normal;}
+	i,em{font-style:normal;}
+	.clearfix:after{display:block;content:'';clear:both;}
+	.clearfix{zoom:1}
+	img{vertical-align:top;border:none;}
+/*main*/
+	html,body{height: 100%; width: 100%; overflow: hidden;}
+	.yaomain{background: #f2f2f2; height: 85%; width: 100%; overflow: hidden; position: relative; top: 0; left: 0;}
+	.yaoimg{ width: 50%; margin: 30px auto 0;}
+	.yaoimg img{ width: 100%;}
+	.tips{ width: 70%;  height: 80px; position: absolute; left: 15%; bottom: 20%; display: table; overflow: hidden;}
+	.tip_con{ width: 100%; height: 100%; background: #fff; border-radius: 12px; border: 1px solid red; margin-top: 81px; -webkit-transition:0.5s all ease;  display: table-cell; vertical-align: middle;}
+	.tip_con p{ text-align: center; line-height: 26px; font-size: 14px;}
+	.over{ position: absolute; width: 100%; left: 0; bottom: 5%; font-size: 16px; text-align: center; font-size: 14px;}
+	.usertel{ text-align: center; line-height: 26px; font-size: 12px;}
+</style>
+<script>
+window.onload=function(){
+	if (window.DeviceMotionEvent) { 
+		window.addEventListener('devicemotion',deviceMotionHandler, false);  
+	} 
+	var aDiv=document.getElementsByTagName('div');
+	var speed = 30;
+	var x = y = z = lastX = lastY = lastZ = 0;
+	var bY=true;
+	function deviceMotionHandler(ev,obj) {  
+	  var acceleration =ev.accelerationIncludingGravity;
+			x = acceleration.x;
+			y = acceleration.y;
+			z = acceleration.z;
+			if((Math.abs(x-lastX) > speed || Math.abs(y-lastY) > speed || Math.abs(z-lastZ) > speed)&&bY) {
+				bY=false;
+				
+			}
+			lastX = x;
+			lastY = y;
+			lastZ = z;
+	}
+}
+</script>
+</head>
+
+<body>
+<div class="yaomain">
+	<div class="yaoimg">
+		<img src="img/yao.png"/>
+	</div>
+	<div class="tips">
+		<div class="tip_con">
+			<p>
+				恭喜您<br />
+				摇到 0.02元 返现奖励
+			</p>
+		</div>
+	</div>
+	<div class="over"><p>您还有<i>0</i>次机会</p></div>
+</div>
+<div class="usertel">
+	<ul>
+		<li><p>150****3354刚刚摇到了0.10元的返现奖励</p></li>
+		<li><p>150****3354刚刚摇到了0.10元的返现奖励</p></li>
+		<li><p>150****3354刚刚摇到了0.10元的返现奖励</p></li>
+	</ul>
+</div>
+</body>
+</html>

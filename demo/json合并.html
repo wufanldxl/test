@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<script>
+	function extend(des, src){
+		if(src instanceof Array){
+	       for(var i = 0; i < src.length; i++){
+	            extend(des, src[i]);
+		   }
+	   }else{
+		   for( var i in src){
+				   des[i] = src[i];
+		   } 
+	   }
+	   return des;
+	}
+	var a ={"a":"1","b":"2"}
+	var b ={"c":"3","d":"4","e":"5"}
+	var c = extend({}, [a, b]);
+	console.log(c)
+</script>
+</head>
+
+<body>
+</body>
+</html>

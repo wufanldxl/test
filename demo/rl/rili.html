@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/base-1.0.css"/>
+		<style type="text/css">
+			body{
+				font-family: "微软雅黑";
+			}
+			@font-face {
+				font-family:"iconfont";
+				src: url("font/iconfont.eot"); /* IE9*/
+			    src: url("font/iconfont.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+			    url("font/iconfont.woff") format("woff"), /* chrome、firefox */
+			    url("font/iconfont.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+			    url("font/iconfont.svg#iconfont") format("svg"); /* iOS 4.1- */
+			}
+			.iconfont{
+			    font-family:"iconfont" !important;
+			    font-size:16px;font-style:normal;
+			    -webkit-font-smoothing: antialiased;
+			    -webkit-text-stroke-width: 0.2px;
+			    -moz-osx-font-smoothing: grayscale;
+			}
+			.box{
+				width: 350px;
+				border: 1px solid #FA263A;
+				margin: 30px auto;
+			}
+			.head{
+				position: relative;
+				top: 0;
+				left: 0;
+				border-bottom: 1px solid #FA263A;
+			}
+			.head h1{
+				font-size: 20px;
+				text-align: center;
+				font-weight: bold;
+				line-height: 40px;				
+			}
+			.head a{
+				position: absolute;
+				top: 0;
+				line-height: 40px;
+			}
+			.head a.prev{
+				left: 3%;
+			}
+			.head a.next{
+				right: 3%;
+			}
+			.head a i{
+				font-size: 20px;
+				font-weight: normal;
+			}
+			.week li{
+				float: left;
+				width: 50px;
+				line-height: 200%;
+				text-align: center;
+				font-weight: bold;
+				font-size: 18px;
+			}
+			.con li{
+				font-family: "宋体";
+				float: left;
+				width: 50px;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				cursor: pointer;
+				position: relative;
+				top: 0;
+				left: 0;
+				overflow: hidden;
+			}
+			.con .now{
+				background: #f90;
+			}
+			.con li.toady{
+				background: #d3f4f7;
+				font-weight: bold;
+			}
+			.con li.past{
+				color: #ccc;
+				cursor: url("img/cancel.png"),auto;
+			}
+			.con li span{
+				position:absolute; 
+				top:0; 
+				left:-50px; 
+				width:100%; 
+				height:100%; 
+				background:#093; 
+				opacity:0.4; 
+				filter:alpha(opacity:50);
+			}
+			
+			
+			#text{
+				border: 1px solid #000;
+				height: 24px;
+				vertical-align: top;
+			}
+			#setcl{
+				width: 60px;
+				line-height: 20px;
+				margin-left: 20px;
+				vertical-align: top;
+			}
+			.txt{
+				display: table;
+				margin: 0 auto;
+			}
+			.txt p{
+				margin-bottom: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<section class="txt">
+			<p>填写目标日期</p>
+			<input type="text" placeholder="yyyy-mm" id="text"/><input type="button" id="setcl" value="确定" />
+		</section>
+		<section class="box">
+			<div class="head">
+				<a href="javascript:;" class="prev"><i class="iconfont">&#xe60f;</i></a>
+				<h1>2016年4月</h1>
+				<a href="javascript:;" class="next"><i class="iconfont">&#xe60e;</i></a>
+			</div>
+			<ul class="week clearfix">
+				<li>一</li>
+				<li>二</li>
+				<li>三</li>
+				<li>四</li>
+				<li>五</li>
+				<li style="color: red;">六</li>
+				<li style="color: red;">七</li>
+			</ul>
+			<div class="con">
+				<ul class="clearfix">
+					
+				</ul>
+			</div>
+		</section>
+	</body>
+	<script src="js/move.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var oPrev=document.querySelector('.prev');
+		var oNext=document.querySelector('.next');
+		var oH1=document.querySelector('.head h1');
+		var oConUl=document.querySelector('.con ul');
+		var aLi=oConUl.children;
+		
+		var festival={'910':'教师节','915':'中秋节','922':'秋分'}
+		
+		var iNow=0;
+		function calendar(){
+			oConUl.innerHTML='';
+			var oDate=new Date();
+			oDate.setMonth(oDate.getMonth()+iNow,1);
+			oH1.innerHTML=oDate.getFullYear()+'年'+(oDate.getMonth()+1)+'月';
+			
+			var oDate=new Date();
+			oDate.setMonth(oDate.getMonth()+iNow,1);
+			var w=oDate.getDay();
+			if(w==0)w=7;
+			w--;
+			for(var i=0;i<w;i++){
+				var li=document.createElement('li');
+				var oi=document.createElement('i');
+				li.appendChild(oi);
+				oConUl.appendChild(li);
+			}
+			
+			var oDate=new Date();
+			oDate.setMonth(oDate.getMonth()+iNow+1,1);
+			oDate.setDate(0);
+			var days=oDate.getDate();
+			for(var i=0;i<days;i++){
+				var li=document.createElement('li');
+				var oi=document.createElement('i');
+				oi.innerHTML=i+1;
+				li.appendChild(oi);
+				var span=document.createElement('span');				
+				li.appendChild(span);
+				oConUl.appendChild(li);
+			}
+						
+			
+			function hoverDir(obj,oEvent){
+				var w = obj.offsetWidth/2+obj.offsetLeft;
+				var h = obj.offsetHeight/2+obj.offsetTop;
+				var x = w-oEvent.clientX;
+				var y = h-oEvent.clientY;
+				return Math.round((Math.atan2(y,x)*180/Math.PI+180)/90)%4;
+			}
+			function through(oBox){
+				var oSpan = oBox.children[1];
+				if(!oSpan) return;
+				oBox.onmouseover=function(ev){
+					var oEvent = ev||event;
+					var oFrom = oEvent.fromElement||oEvent.relatedTarget;
+					if(oBox.contains(oFrom))return;
+					var dir = hoverDir(oBox,oEvent);
+					switch(dir){
+						case 0:
+							oSpan.style.left='50px';
+							oSpan.style.top=0;
+							break;
+						case 1:
+							oSpan.style.left=0;
+							oSpan.style.top='50px';
+							break;
+						case 2:
+							oSpan.style.left='-50px';
+							oSpan.style.top=0;
+							break;
+						case 3:
+							oSpan.style.left=0;
+							oSpan.style.top='-50px';
+							break;
+					}
+					startMove(oSpan,{left:0,top:0},{time:500});
+				};
+				oBox.onmouseout=function(ev){
+					var oEvent = ev||event;
+					var oTo = oEvent.toElement||oEvent.relatedTarget;
+					if(oBox.contains(oTo))return;
+					var dir = hoverDir(oBox,oEvent);
+					switch(dir){
+						case 0:
+							startMove(oSpan,{top:0,left:50},{time:500});
+							break;
+						case 1:
+							startMove(oSpan,{top:50,left:0},{time:500});
+							break;
+						case 2:
+							startMove(oSpan,{top:0,left:-50},{time:500});
+							break;
+						case 3:
+							startMove(oSpan,{top:-50,left:0},{time:500});
+							break;
+					}
+				};
+			}
+			
+			function addev(li,i){
+				through(li);
+				li.onclick=function(){
+					alert(oH1.innerHTML+this.innerHTML+'日');
+				}
+				if(i>4&&(i%7==5||i%7==6)){
+					li.style.color='#f00';
+				}
+			}
+			
+			var oDate=new Date();
+			var today=oDate.getDate();
+			for(var i=0;i<aLi.length;i++){				
+				if(iNow<0){
+					aLi[i].className='past';
+					if(i>4&&(i%7==5||i%7==6)){
+						aLi[i].style.color='#fcc';
+					}
+				}else if(iNow==0){
+					if(aLi[i].children[0].innerHTML<today){
+						aLi[i].className='past';
+						if(i>4&&(i%7==5||i%7==6)){
+							aLi[i].style.color='#fcc';
+						}
+					}else if(aLi[i].children[0].innerHTML==today){
+						aLi[i].className='toady';
+						addev(aLi[i],i);
+						
+					}else{
+						addev(aLi[i],i);
+					}
+				}else{
+					addev(aLi[i],i);
+				}
+			}
+		}
+		
+		calendar();
+		
+		oPrev.onclick=function(){
+			iNow--;
+			calendar();
+		}
+		oNext.onclick=function(){
+			iNow++;
+			calendar();
+		}
+		
+		var oBtn=document.getElementById('setcl');
+		var oText=document.getElementById('text');
+		var reg=/^[0-9]{4}\-[0-9]{2}$/;
+		oBtn.onclick=function(){
+			var vul=oText.value;
+			if(reg.test(vul)){
+				var arr=vul.split('-');
+				if(arr[1]>12){
+					alert('你家有'+arr[1]+'月啊！');
+				}else{
+					var oDate=new Date();
+					var disYear=arr[0]-oDate.getFullYear();
+					var disMonth=arr[1]-1-oDate.getMonth();
+					iNow=disYear*12+disMonth;
+					calendar();
+				}
+			}else{
+				alert('请按照格式"yyyy-mm"填写');
+			}
+		}
+		
+		
+	</script>
+</html>

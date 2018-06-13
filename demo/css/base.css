@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;}
+a{text-decoration:none;color:#000;}
+ol,ul,dl{list-style:none;}
+b,strong{font-weight:normal;}
+h1,h2,h3,h4,h5,h6{font-size:12px;font-weight:normal;}
+i,em{font-style:normal;}
+.clearfix:after{display:block;content:'';clear:both;}
+.clearfix{zoom:1}
+img{vertical-align:top;border:none;}
+table{border-collapse:collapse;display: table-row-group; vertical-align: middle; border-color: inherit}
+tr{  display: table-row;vertical-align: inherit;border-color: inherit;}
+th,td{padding:0; display: table-cell; vertical-align: inherit;}
+iframe{border:none;}

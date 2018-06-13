@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		    
+		    p{
+		        width: 200px;
+		        height: 100px;
+		        background: #EEEEEE;
+		        display: -webkit-box;  
+                overflow: hidden;  
+                text-overflow: ellipsis;  
+                word-break: break-all;  
+                -webkit-box-orient: vertical;  
+                -webkit-line-clamp:5; 
+		    }
+		</style>
+	</head>
+	<body>
+	    
+	    
+	    <script type="text/javascript">
+	       
+	        function mr(obj){
+	            /*
+	             *obj.target --- 必填 样本数组
+	             * obj.prob --- 非必填 样本中每条数据的概率（总和必须为1）.
+	             * obj.cont --- 非必填 需要的结果个数
+	             * obj.repeat --- 非必填 是否可以重复选择数据，默认true
+	             * */
+	            let target=obj.target;
+	            let prob=obj.prob||new Array(target.length+1).join(1/target.length+' ').split(' ').slice(0,-1);
+	            let cont=obj.cont
+	            let repeat=obj.repeat===undefined?true:obj.repeat
+	            
+	            let isok=true
+	            prob.forEach(function(i){
+                    if(i===0&&repeat===false){
+                        isok=false
+                        return;
+                    }
+                })
+	            
+	            if(target.length!==prob.length){
+	                console.error('概率的数量必须与目标数组长度相同')
+	                return null
+	            }else if(!isok){
+	                console.error('repeat为false时，prob概率大于0的个数必须多于或等于cont')
+	                return null
+	            }else{
+	                let sumProb=prob?(new Function('return '+prob.join('+')))():null;
+	                
+	                if(sumProb!==1){
+	                    console.error(sumProb,'概率总和必须是1')
+	                    return null
+	                }else{
+	                    function s(){
+	                        let rdm
+	                        function getrdm(){
+	                            let r=Math.random()*(new Function('return '+prob.join('+')))();
+	                            if(r===0){
+	                                getrdm()
+	                            }else{
+	                                return r
+	                            }
+	                        }
+	                        
+	                        rdm=getrdm();
+                            let n=0;
+                            for(let i=0;i<prob.length;i++){
+                                let n1=n+Number(prob[i])
+                                if(n<rdm&&rdm<n1){
+                                    if(repeat){
+                                        return target[i]
+                                    }else{
+                                        let re=target[i]
+                                        prob.splice(i,1);
+                                        target.splice(i,1)
+                                        return re
+                                    }
+                                    
+                                }
+                                n+=Number(prob[i])
+                            }
+                            
+	                    }
+	                    if(cont&&cont!==1){
+	                        let res=[];
+	                        for(let i=0;i<cont;i++){
+                                res.push(s())
+                            }
+	                        return res
+	                    }else{
+	                        return s();
+	                    }
+	                }
+	            }
+	        }
+	        
+	        
+	        let arr=['abc',11,'ccc','ddd'];
+             
+            let prob=[0.90,0.10,0,0]
+	        
+	        let n=mr({
+	            target:arr,
+	            prob,
+	            cont:10,
+	            repeat:true
+	        });
+	        
+	        document.write(n)
+	        
+
+	        
+	    </script>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+.box {
+  color: #f90;
+}
+.div {
+  background: #f90;
+}
+.box {
+  background: #ccc;
+  border-top: #ccc solid 3px;
+  border-bottom: #ccc solid 3px;
+}
+.cc {
+  border-top: #f90 solid 5px;
+  border-bottom: #f90 solid 5px;
+}
+.box p {
+  font-size: 12px;
+}
+.box p i {
+  border-top: #ccc solid 3px;
+  border-bottom: #ccc solid 3px;
+}
+.box p {
+  border-top: 6px solid #f90;
+  border-bottom: 6px solid #f90;
+}
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<style>
+*{margin:0; padding:0;}
+#box{width:200px; height:200px;background:#f90; position:absolute; top:0; left:0;}
+</style>
+<script>
+window.onload=function(){
+	var oBox = document.getElementById('box');
+	var disX = 0;
+	var disY = 0;
+	var timer=null;
+	var speedY=0;
+	var lastY=0;
+	var speedX=0;
+	var lastX=0;
+	oBox.onmousedown=function(ev){
+		var oEvent = ev||event;
+		disX = oEvent.clientX-oBox.offsetLeft;
+		disY = oEvent.clientY-oBox.offsetTop;
+		var l=0,t=0;
+		document.onmousemove=function(ev){
+			var oEvent = ev||event;
+			l =oEvent.clientX-disX;
+			t = oEvent.clientY-disY;
+			if(l<0){
+				l=0;
+			}else if(l>document.documentElement.clientWidth-oBox.offsetWidth){
+				l=document.documentElement.clientWidth-oBox.offsetWidth;
+			}
+			if(t<0){
+				t=0;
+			}else if(t>document.documentElement.clientHeight-oBox.offsetHeight){
+				t=document.documentElement.clientHeight-oBox.offsetHeight;
+			}
+			oBox.style.left=l+'px';
+			oBox.style.top=t+'px';
+			
+			speedX=oEvent.clientX-lastX;
+			lastX=oEvent.clientX;
+			speedY=oEvent.clientY-lastY;
+			lastY=oEvent.clientY;
+		};
+		document.onmouseup=function(){
+			document.onmousemove=null;
+			document.onmouseup=null;
+			oBox.releaseCapture&&oBox.releaseCapture();
+			timer=setInterval(function(){
+				t+=speedY;
+				l+=speedX;
+				speedY*=0.9;
+				speedX*=0.9;
+				oBox.style.left=l+'px';
+				oBox.style.top=t+'px';
+				document.title=speedX+'+'+speedY;
+				if(Math.abs(speedY)<1&&Math.abs(speedX)<1){
+					clearInterval(timer);
+				}
+			},30)
+		};
+		oBox.setCapture&&oBox.setCapture();
+		return false;
+	};
+};
+</script>
+</head>
+
+<body>
+就废了地税局古拉的勾搭谁拉进来的独角兽
+<div id="box"></div>
+就废了地税局古拉的勾搭谁拉进来的独角兽
+<a href="tel:18688888888">拨号</a>   
+<a href="sms:10086&body=asldk">发送短信</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

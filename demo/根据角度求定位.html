@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>根据角度求定位</title>
+		<style type="text/css">
+			.pop{
+				width: 100%;
+				height: 100%;
+				background: rgba(0,0,0,0.5);
+				position: fixed;
+				top: 0;
+				left: 0;
+				font-family: "微软雅黑";
+			}
+			.pop_con{
+				width: 30%;
+				background: #fff;
+				position: absolute;
+				top: -100px;
+				left: 50%;
+				margin-left: -15%;
+				padding: 16px;
+				border-radius: 8px;
+				padding-bottom: 50px;
+				-webkit-animation: pop 0.3s ease-out forwards ;
+			}
+			.pop_con p{
+				text-align: center;
+				font-weight: bold;
+				font-size: 18px;
+				margin:26px 0;
+			}
+			.pop_con .btn{
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				border-top: 2px solid #ccc;
+				padding: 10px 0;
+			}
+			.pop_con .btn button{
+				float: right;
+				margin-right: 30px;
+				background: #CBE846;
+				border: none;
+				width: 50px;
+				height: 30px;
+				border-radius: 8px;
+				font-weight: bold;
+				outline: none;
+				cursor: pointer;
+			}
+			.pop_con .btn button:active{
+				box-shadow:0 5px 30px #889b2e inset;
+				border-left: 3px solid #889b2e;
+				border-top: 3px solid #889b2e;
+			}
+			
+			@-webkit-keyframes pop{
+				from{top: -100px;}
+				to{top: 80px;}
+			}
+			
+			.click{
+				width: 10px;
+				height: 10px;
+				margin: -5px 0 0 -5px;
+				background: #FA263A;
+				border-radius: 50%;
+				position: fixed;
+				-webkit-transform-origin: 50% 50%;				
+				-webkit-animation: click 0.3s linear;
+			}
+			
+			#left,#top{
+				background: #eee;
+				border: 1px solid #000;
+			}
+			@-webkit-keyframes click{
+				from{
+					opacity: 1;
+					-webkit-transform: scale(1);
+				}
+				to{
+					opacity: 0;
+					-webkit-transform: scale(3);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		
+		<form >
+			半径<input type="number" value="" id="r" /> 单位 <input type="radio" name="unit" value="px" id="px" checked /><label for="px">px</label> <input type="radio" name="unit" value="rem" id="rem" /><label for="rem">rem</label>  <br />
+			所需角度<input type="number" value="" id="deg" />
+			<input type="button" id="sub" value="提交" /> <input type="reset" name="" id="" value="清空" /><br />
+			<br />
+			left:<input type="text" id="left" value="" readonly />
+			top:<input type="text" id="top" value="" readonly /><br />
+			<br />
+			<textarea style="width: 300px; height: 200px; resize: none;"></textarea>
+		</form>
+		
+		<!--<div class="pop">
+			<div class="pop_con">
+				<p>提示信息</p>				
+				<div class="btn">
+					<button>确定</button>
+				</div>
+			</div>
+		</div>-->
+	</body>
+	<script type="text/javascript">
+		var r=document.getElementById('r');
+		var deg=document.getElementById('deg');
+		var sub=document.getElementById('sub');
+		var l=document.getElementById('left');
+		var t=document.getElementById('top');
+		var txt=document.getElementsByTagName('textarea')[0];
+		var unit=document.getElementsByName('unit');
+		var unitv;
+		
+		function _alert(msg){
+			var box=document.createElement('div');
+			box.className='pop';
+			box.innerHTML='<div class="pop_con"><p>'+msg+'</p><div class="btn"><button class="closepop">确定</button></div></div>';
+			document.body.appendChild(box);
+			var popCon=box.querySelector('.pop_con');
+			
+			var closePop=box.querySelector('.closepop');
+			closePop.onclick=function(){
+			    popCon.addEventListener('transitionend',function(){
+                    document.body.removeChild(box);
+                },false);
+			    popCon.style.webkitTransition='all 0.3s linear';
+			    popCon.style.top='-100px';			    				
+			}
+			
+		}
+		
+		
+		
+		sub.onclick=function(){
+			if(r.value==''){
+				_alert('不写半径算个JJ！');
+				return;
+			}
+			if(deg.value==''){
+				_alert('不写角度算个JJ！');
+				return;
+			}
+			for(var i=0;i<unit.length;i++){
+				if(unit[i].checked){
+					unitv=unit[i].value;
+				}
+			}
+			var rv=parseFloat(r.value);
+			var dv=parseFloat(deg.value)
+			
+			var lv=(rv+Math.sin(dv*Math.PI/180)*rv).toFixed(5);
+			var tv=(rv-Math.cos(dv*Math.PI/180)*rv).toFixed(5);
+			l.value=lv;
+			t.value=tv;
+			txt.value='left:'+parseFloat(lv)+unitv+';\ntop:'+parseFloat(tv)+unitv+';';
+		}
+		
+		
+		document.addEventListener('click',function(ev){
+			var div=document.createElement('div');
+//			if(ev.target.className=='click'){
+//				return false;
+//			}
+			div.className='click';
+			div.style.left=ev.pageX+'px';
+			div.style.top=ev.pageY+'px';			
+			document.body.appendChild(div);
+			function remove(){
+				document.body.removeChild(div);
+			}
+			div.addEventListener('animationend',remove,false);
+//			div.addEventListener('click',remove,false);
+		},false);
+		
+		
+	
+	</script>
+</html>

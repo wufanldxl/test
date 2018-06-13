@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0" />
+<title>无标题文档</title>
+<style>
+	html{ font-size:32px;}
+	*{ margin:0; padding:0;}
+	.box{ height:2rem; font-size:0.5rem; line-height:2rem; background-image:url(vip.png); background-size:18.75rem; background-repeat:no-repeat; background-position:-0.8125rem -0.875rem ;}
+</style>
+</head>
+
+<body>
+<input type="text" class="box" placeholder="请输入内容"/>
+<script>
+	window.onresize = function(){
+			document.documentElement.style.fontSize = document.documentElement.clientWidth*0.1+'px';
+		};
+	window.onresize();
+</script>
+</body>
+</html>

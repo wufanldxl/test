@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			.panbox{position: relative; top: 0; left: 0;  width: 480px; height: 480px;}
+			.pan{ width: 480px; height: 480px; border-radius: 50%; -webkit-transition:5s transform cubic-bezier(0.48, 0.02, 0.17, 1);}
+			
+			.sim{ width: 112px; height: 142px; background:url(img/zhuan2.png) no-repeat; position: absolute; top: 50%; left: 50%; margin: -71px 0 0 -56px;}
+		</style>
+		<script type="text/javascript">
+		//运动
+			function move(obj, json, options){
+				options=options||{};
+				options.time=options.time||700;
+				options.type=options.type||'ease-out';
+				options.property=options.property||'all';
+				obj.style.WebkitTransition=options.time+'ms '+options.property+' '+options.type;
+				for(var name in json){
+					if(name=='transform'){
+						obj.style.WebkitTransform=json[name];
+						obj.style.MozTransform=json[name];
+						obj.style.msTransform=json[name];
+						obj.style.OTransform=json[name];
+						obj.style.transform=json[name];
+					}
+					else{
+						obj.style[name]=json[name];
+					}
+				}
+				function fnEnd(){
+					obj.style.WebkitTransition='none';
+					obj.removeEventListener('transitionend', fnEnd, false);					
+					options.end && options.end();
+				}
+				obj.addEventListener('transitionend', fnEnd, false);
+			}
+			window.onload=function(){
+				var oPan=document.getElementById('pan');
+				var oGo=document.getElementById('go');
+				oGo.onclick=function(){
+					move(oPan,{'transform':'rotate(1888deg)'},{'time':5000,'type':'ease','end':function(){
+						alert('转完了')
+					}})
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="panbox">
+			<div class="pan" id="pan">
+				<img src="img/zhuan1.png" alt="" />
+			</div>
+			<div class="sim" id="go"></div>
+		</div>
+	</body>
+</html>
