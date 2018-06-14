@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>百度地图测试</title>
+    <script id="baiduMap" src="https://api.map.baidu.com/api?v=2.0&ak=636E1f90d69d1c5ca51ea5ceea86bb29" type="text/javascript"></script>
+    <script type="text/javascript">
+        let map = new BMap.Map("allmap");
+        let geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (r.address) {
+                console.log(r.address.city.replace(/市$/g, ''))
+            }
+        })
+    </script>
+  </head>
+  <body>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

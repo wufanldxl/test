@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/server/!svn/ver/68095/attach/trunk/embedpage/recruit/config
+END
+dev.env.js
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/config/dev.env.js
+END
+index.js
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/server/!svn/ver/68095/attach/trunk/embedpage/recruit/config/index.js
+END
+prod.env.js
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/config/prod.env.js
+END

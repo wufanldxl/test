@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build
+END
+vue-loader.conf.js
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build/vue-loader.conf.js
+END
+webpack.base.conf.js
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build/webpack.base.conf.js
+END
+webpack.dev.conf.js
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build/webpack.dev.conf.js
+END
+build.js
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build/build.js
+END
+utils.js
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build/utils.js
+END
+check-versions.js
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build/check-versions.js
+END
+webpack.prod.conf.js
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/server/!svn/ver/67932/attach/trunk/embedpage/recruit/build/webpack.prod.conf.js
+END
