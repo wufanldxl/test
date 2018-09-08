@@ -40,14 +40,42 @@
         <input type="button" name="" id="btn" value="我该玩那个" />
         <p class="res"></p>
         <div class="icon"></div>
+				
         <script type="text/javascript">
         	function rnd(n,m){
                 return parseInt(n+Math.random()*(m-n));     
-            }
+          }
         	
         	function $qe(sel){
                 return document.querySelector(sel);
-            }
+          }
+					
+					function loadImages(json, fn, spFn){
+					    var total=0;    //所有的
+					    var count=0;    //完成的
+					    var speed=0;
+					    var images={};
+							console.log(json)
+					    for(var name in json){
+					        total++;
+					        var url=json[name];                 
+					        var oImg=new Image();                   
+					        oImg.src=url;                   
+					        (function (name){
+					            oImg.onload=function ()
+					            {
+													console.log(this)
+					                images[name]=this;
+					                count++;
+					                speed=count/total;
+					                spFn&&spFn(speed);
+					                if(count==total){
+					                    fn&&fn(images);
+					                }
+					            };
+					        })(name);
+					    }
+					}
         	
         	var job=[
                 {'jobEn':'lr','jobName':'猎人'},
@@ -162,8 +190,14 @@
 								}
 								
             ]
-            
-            
+						
+					var imgs={};
+					for(var i=0;i<job.length;i++){
+							imgs[job[i].jobEn]='icon/'+job[i].jobEn+'.png'
+					}
+          
+					loadImages(imgs)
+           
         	//创建种族
         	function creatClan(clan){
                 var chbox=$qe('.checkbox-clan');
