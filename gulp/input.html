@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <textarea onblur="" id="input" maxlength="50"></textarea>
+    <div id="num">50</div>
+
+    <script>
+        var input = document.querySelector('#input');
+        var num = document.querySelector('#num');
+
+        (function() {
+            var n = 50;
+            var timer = null;
+            input.onfocus = function() {
+                timer = setInterval(function() {
+                    n = 50 - input.value.length;
+                    num.innerHTML = 50 - input.value.length;
+                    if (n == 0) {
+                        clearInterval(timer);
+                        num.innerHTML = ('你TM憋输了');
+                    }
+                }, 100);
+            }
+
+            input.onblur = function() {
+                clearInterval(timer);
+            }
+        })();
+    </script>
+</body>
+
+</html>
