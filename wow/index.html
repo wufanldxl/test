@@ -1,330 +1,336 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title>职业选择器</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style type="text/css">
-        	label{
-        	    margin-right: 10px;
-        	}
-        	.res{
-        	    font-size: 80px;
-        	    font-family: "微软雅黑";
-        	    font-weight: bold;
-        	    text-align: center;
-        	    text-shadow: #000 0px 5px 8px;
-        	    margin: 0;
-        	}
-        	img{
-        	    vertical-align: top;
-        	}
-        	.icon{
-        	    text-align: center;
-        	}
-        	.icon img{
-        	    width: 395px;
-        	}
+            label {
+                margin-right: 10px;
+            }
+
+            .res {
+                font-size: 80px;
+                font-family: "微软雅黑";
+                font-weight: bold;
+                text-align: center;
+                text-shadow: #000 0px 5px 8px;
+                margin: 0;
+            }
+
+            img {
+                vertical-align: top;
+            }
+
+            .icon {
+                text-align: center;
+            }
+
+            .icon img {
+                width: 395px;
+            }
         </style>
     </head>
+
     <body>
         <div class="checkbox-clan">
-            
+
         </div>
         <input type="checkbox" name="all-clan" id="all-clan" value="" /><label for="all-clan">全选</label>
         <hr />
         <div class="checkbox-job">
-            
+
         </div>
         <input type="checkbox" name="all-job" id="all-job" value="" /><label for="all-job">全选</label>
         <hr />
         <input type="button" name="" id="btn" value="我该玩那个" />
         <p class="res"></p>
         <div class="icon"></div>
-				
+
         <script type="text/javascript">
-        	function rnd(n,m){
-                return parseInt(n+Math.random()*(m-n));     
-          }
-        	
-        	function $qe(sel){
+            function rnd(n, m) {
+                return parseInt(n + Math.random() * (m - n));
+            }
+
+            function $qe(sel) {
                 return document.querySelector(sel);
-          }
-					
-					function loadImages(json, fn, spFn){
-					    var total=0;    //所有的
-					    var count=0;    //完成的
-					    var speed=0;
-					    var images={};
-							console.log(json)
-					    for(var name in json){
-					        total++;
-					        var url=json[name];                 
-					        var oImg=new Image();                   
-					        oImg.src=url;                   
-					        (function (name){
-					            oImg.onload=function ()
-					            {
-													console.log(this)
-					                images[name]=this;
-					                count++;
-					                speed=count/total;
-					                spFn&&spFn(speed);
-					                if(count==total){
-					                    fn&&fn(images);
-					                }
-					            };
-					        })(name);
-					    }
-					}
-        	
-        	var job=[
-                {'jobEn':'lr','jobName':'猎人'},
-                {'jobEn':'fs','jobName':'法师'},
-                {'jobEn':'qs','jobName':'圣骑士'},
-                {'jobEn':'ms','jobName':'牧师'},
-                {'jobEn':'dk','jobName':'死亡骑士'},
-                {'jobEn':'zs','jobName':'战士'},
-                {'jobEn':'ss','jobName':'术士'},
-                {'jobEn':'sm','jobName':'萨满'},
-                {'jobEn':'dz','jobName':'盗贼'},
-                {'jobEn':'ws','jobName':'武僧'},
-                {'jobEn':'dh','jobName':'恶魔猎手'},
-                {'jobEn':'xd','jobName':'德鲁伊'}
+            }
+
+            function loadImages(json, fn, spFn) {
+                var total = 0;    //所有的
+                var count = 0;    //完成的
+                var speed = 0;
+                var images = {};
+                console.log(json)
+                for (var name in json) {
+                    total++;
+                    var url = json[name];
+                    var oImg = new Image();
+                    oImg.src = url;
+                    (function (name) {
+                        oImg.onload = function () {
+                            console.log(this)
+                            images[name] = this;
+                            count++;
+                            speed = count / total;
+                            spFn && spFn(speed);
+                            if (count == total) {
+                                fn && fn(images);
+                            }
+                        };
+                    })(name);
+                }
+            }
+
+            var job = [
+                { 'jobEn': 'lr', 'jobName': '猎人' },
+                { 'jobEn': 'fs', 'jobName': '法师' },
+                { 'jobEn': 'qs', 'jobName': '圣骑士' },
+                { 'jobEn': 'ms', 'jobName': '牧师' },
+                { 'jobEn': 'dk', 'jobName': '死亡骑士' },
+                { 'jobEn': 'zs', 'jobName': '战士' },
+                { 'jobEn': 'ss', 'jobName': '术士' },
+                { 'jobEn': 'sm', 'jobName': '萨满' },
+                { 'jobEn': 'dz', 'jobName': '盗贼' },
+                { 'jobEn': 'ws', 'jobName': '武僧' },
+                { 'jobEn': 'dh', 'jobName': '恶魔猎手' },
+                { 'jobEn': 'xd', 'jobName': '德鲁伊' }
             ];
-            
-            var clan=[
+
+            var clan = [
                 {
-                    clanName:'人类',
-                    clanEn:'human',
-                    canJob:['lr','fs','qs','ms','dk','zs','ss','dz','ws']
+                    clanName: '人类',
+                    clanEn: 'human',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws']
                 },
                 {
-                    clanName:'矮人',
-                    clanEn:'dwarf',
-                    canJob:['lr','fs','qs','ms','dk','zs','ss','dz','ws','sm']
+                    clanName: '矮人',
+                    clanEn: 'dwarf',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws', 'sm']
                 },
                 {
-                    clanName:'暗夜精灵',
-                    clanEn:'night_elf',
-                    canJob:['lr','fs','ms','dk','zs','dz','ws','xd','dh']
+                    clanName: '暗夜精灵',
+                    clanEn: 'night_elf',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'dz', 'ws', 'xd', 'dh']
                 },
                 {
-                    clanName:'侏儒',
-                    clanEn:'gnome',
-                    canJob:['lr','fs','ms','dk','zs','ss','dz','ws']
+                    clanName: '侏儒',
+                    clanEn: 'gnome',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws']
                 },
                 {
-                    clanName:'德莱尼',
-                    clanEn:'draenei',
-                    canJob:['lr','fs','qs','ms','dk','zs','ws','sm']
+                    clanName: '德莱尼',
+                    clanEn: 'draenei',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ws', 'sm']
                 },
                 {
-                    clanName:'狼人',
-                    clanEn:'worgen',
-                    canJob:['lr','fs','ms','dk','zs','ss','dz','xd']
+                    clanName: '狼人',
+                    clanEn: 'worgen',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'xd']
                 },
                 {
-                    clanName:'熊猫人',
-                    clanEn:'pandaren',
-                    canJob:['lr','fs','ms','zs','dz','ws','sm']
+                    clanName: '熊猫人',
+                    clanEn: 'pandaren',
+                    canJob: ['lr', 'fs', 'ms', 'zs', 'dz', 'ws', 'sm']
                 },
                 {
-                    clanName:'兽人',
-                    clanEn:'orc',
-                    canJob:['lr','fs','dk','zs','ss','dz','ws','sm']
+                    clanName: '兽人',
+                    clanEn: 'orc',
+                    canJob: ['lr', 'fs', 'dk', 'zs', 'ss', 'dz', 'ws', 'sm']
                 },
                 {
-                    clanName:'亡灵',
-                    clanEn:'undead',
-                    canJob:['lr','fs','ms','dk','zs','ss','dz','ws']
+                    clanName: '亡灵',
+                    clanEn: 'undead',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws']
                 },
                 {
-                    clanName:'牛头人',
-                    clanEn:'tauren',
-                    canJob:['lr','ms','dk','zs','ws','xd','sm','qs']
+                    clanName: '牛头人',
+                    clanEn: 'tauren',
+                    canJob: ['lr', 'ms', 'dk', 'zs', 'ws', 'xd', 'sm', 'qs']
                 },
                 {
-                    clanName:'巨魔',
-                    clanEn:'troll',
-                    canJob:['lr','fs','ms','dk','zs','ss','dz','ws','sm','xd']
+                    clanName: '巨魔',
+                    clanEn: 'troll',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws', 'sm', 'xd']
                 },
                 {
-                    clanName:'血精灵',
-                    clanEn:'blood_elf',
-                    canJob:['lr','fs','qs','ms','dk','zs','ws','dh','dz','ss']
+                    clanName: '血精灵',
+                    clanEn: 'blood_elf',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ws', 'dh', 'dz', 'ss']
                 },
                 {
-                    clanName:'地精',
-                    clanEn:'goblin',
-                    canJob:['lr','fs','ms','dk','zs','ss','dz','sm']
+                    clanName: '地精',
+                    clanEn: 'goblin',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'sm']
                 },
-								{
-									clanName:'黑铁矮人',
-									clanEn:'dark_iron_dwarf',
-									canJob:['lr','fs','ws','qs','ms','dz','sm','ss','zs']
-								},
-								{
-									clanName:'虚空精灵',
-									clanEn:'void_elf',
-									canJob:['lr','fs','ws','ms','dz','ss','zs']
-								},
-								{
-									clanName:'光铸德莱尼',
-									clanEn:'lightforged_draenei',
-									canJob:['lr','fs','qs','ms','zs']
-								},
-								{
-									clanName:'至高岭牛头人',
-									clanEn:'highmountain）tauren',
-									canJob:['xd','lr','ws','sm','zs']
-								},
-								{
-									clanName:'玛格汉兽人',
-									clanEn:'maghar_orc',
-									canJob:['lr','fs','ws','ms','dz','sm','zs']
-								},
-								{
-									clanName:'夜之子',
-									clanEn:'nightborne',
-									canJob:['lr','fs','ws','ms','dz','ss','zs']
-								}
-								
+                {
+                    clanName: '黑铁矮人',
+                    clanEn: 'dark_iron_dwarf',
+                    canJob: ['lr', 'fs', 'ws', 'qs', 'ms', 'dz', 'sm', 'ss', 'zs']
+                },
+                {
+                    clanName: '虚空精灵',
+                    clanEn: 'void_elf',
+                    canJob: ['lr', 'fs', 'ws', 'ms', 'dz', 'ss', 'zs']
+                },
+                {
+                    clanName: '光铸德莱尼',
+                    clanEn: 'lightforged_draenei',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'zs']
+                },
+                {
+                    clanName: '至高岭牛头人',
+                    clanEn: 'highmountain）tauren',
+                    canJob: ['xd', 'lr', 'ws', 'sm', 'zs']
+                },
+                {
+                    clanName: '玛格汉兽人',
+                    clanEn: 'maghar_orc',
+                    canJob: ['lr', 'fs', 'ws', 'ms', 'dz', 'sm', 'zs']
+                },
+                {
+                    clanName: '夜之子',
+                    clanEn: 'nightborne',
+                    canJob: ['lr', 'fs', 'ws', 'ms', 'dz', 'ss', 'zs']
+                }
+
             ]
-						
-					var imgs={};
-					for(var i=0;i<job.length;i++){
-							imgs[job[i].jobEn]='icon/'+job[i].jobEn+'.png'
-					}
-          
-					loadImages(imgs)
-           
-        	//创建种族
-        	function creatClan(clan){
-                var chbox=$qe('.checkbox-clan');
-                for(var i=0;i<clan.length;i++){
-                    var c=document.createElement('input');
-                    c.type='checkbox';
-                    c.name=clan[i].clanEn;
-                    c.id=clan[i].clanEn;
-                    c.value=clan[i].clanName;
+
+            var imgs = {};
+            for (var i = 0; i < job.length; i++) {
+                imgs[job[i].jobEn] = 'icon/' + job[i].jobEn + '.png'
+            }
+
+            loadImages(imgs)
+
+            //创建种族
+            function creatClan(clan) {
+                var chbox = $qe('.checkbox-clan');
+                for (var i = 0; i < clan.length; i++) {
+                    var c = document.createElement('input');
+                    c.type = 'checkbox';
+                    c.name = clan[i].clanEn;
+                    c.id = clan[i].clanEn;
+                    c.value = clan[i].clanName;
                     chbox.appendChild(c);
-                    var l=document.createElement('label');
-                    l.htmlFor=clan[i].clanEn;
-                    l.innerHTML=clan[i].clanName;
+                    var l = document.createElement('label');
+                    l.htmlFor = clan[i].clanEn;
+                    l.innerHTML = clan[i].clanName;
                     chbox.appendChild(l);
                 }
             }
-        	creatClan(clan);
-        	
-        	//创建职业
-            function creatJob(job){
-                var chbox=$qe('.checkbox-job');
-                for(var i=0;i<job.length;i++){
-                    var c=document.createElement('input');
-                    c.type='checkbox';
-                    c.name=job[i].jobEn;
-                    c.id=job[i].jobEn;
-                    c.value=job[i].jobName;
-                    c.disabled=true;
+            creatClan(clan);
+
+            //创建职业
+            function creatJob(job) {
+                var chbox = $qe('.checkbox-job');
+                for (var i = 0; i < job.length; i++) {
+                    var c = document.createElement('input');
+                    c.type = 'checkbox';
+                    c.name = job[i].jobEn;
+                    c.id = job[i].jobEn;
+                    c.value = job[i].jobName;
+                    c.disabled = true;
                     chbox.appendChild(c);
-                    var l=document.createElement('label');
-                    l.htmlFor=job[i].jobEn;
-                    l.innerHTML=job[i].jobName;
+                    var l = document.createElement('label');
+                    l.htmlFor = job[i].jobEn;
+                    l.innerHTML = job[i].jobName;
                     chbox.appendChild(l);
                 }
-                
+
             }
             creatJob(job);
-            
+
             //联选
-            function checkAll(checks,all){
-                all.addEventListener('change',function(){
-                    var n=0;
-                    if(this.checked){
-                        for(var i=0;i<checks.length;i++){
-                            if(checks[i].disabled==false){
+            function checkAll(checks, all) {
+                all.addEventListener('change', function () {
+                    var n = 0;
+                    if (this.checked) {
+                        for (var i = 0; i < checks.length; i++) {
+                            if (checks[i].disabled == false) {
                                 n++;
-                                checks[i].checked=true;
+                                checks[i].checked = true;
                             }
                         }
-                        if(n==0){
+                        if (n == 0) {
                             alert('没有符合的职业');
-                            this.checked=false;
+                            this.checked = false;
                             return false;
                         }
-                    }else{
-                        for(var i=0;i<checks.length;i++){
-                            checks[i].checked=false;
+                    } else {
+                        for (var i = 0; i < checks.length; i++) {
+                            checks[i].checked = false;
                         }
                     }
-                },false);
-                
-                var n=0;
-                for(var i=0;i<checks.length;i++){
-                    checks[i].addEventListener('change',function(){
-                        n=0;
-                        for(var i=0;i<checks.length;i++){
-                            if(checks[i].checked){
-                               n++;
+                }, false);
+
+                var n = 0;
+                for (var i = 0; i < checks.length; i++) {
+                    checks[i].addEventListener('change', function () {
+                        n = 0;
+                        for (var i = 0; i < checks.length; i++) {
+                            if (checks[i].checked) {
+                                n++;
                             }
                         }
-                        if(n==checks.length){
-                            all.checked=true;
-                        }else{
-                            all.checked=false;
+                        if (n == checks.length) {
+                            all.checked = true;
+                        } else {
+                            all.checked = false;
                         }
-                    },false);
+                    }, false);
                 }
             }
-            
-            
-        	var clans=document.querySelectorAll('.checkbox-clan [type=checkbox]');
-        	checkAll(clans,$qe('#all-clan'));
-        	
-        	var cs=document.querySelectorAll('.checkbox-job [type=checkbox]');
-        	checkAll(cs,$qe('#all-job'));
-        	
-        	function checkClan(){
-        	    var sel=[];
-        	    function cFn(){
-        	        sel=[];
-                    for(var j=0;j<clans.length;j++){
-                        if(clans[j].checked){
+
+
+            var clans = document.querySelectorAll('.checkbox-clan [type=checkbox]');
+            checkAll(clans, $qe('#all-clan'));
+
+            var cs = document.querySelectorAll('.checkbox-job [type=checkbox]');
+            checkAll(cs, $qe('#all-job'));
+
+            function checkClan() {
+                var sel = [];
+                function cFn() {
+                    sel = [];
+                    for (var j = 0; j < clans.length; j++) {
+                        if (clans[j].checked) {
                             sel.push(clans[j].name);
                         }
                     }
-                    for(var j=0;j<cs.length;j++){
-                        cs[j].disabled=true;
-                        cs[j].checked=false;
-                        $qe('#all-job').checked=false;
+                    for (var j = 0; j < cs.length; j++) {
+                        cs[j].disabled = true;
+                        cs[j].checked = false;
+                        $qe('#all-job').checked = false;
                     }
-                    for(var i=0;i<sel.length;i++){
-                        (function(i){
-                            for(var j=0;j<clan.length;j++){
-                                if(clan[j].clanEn==sel[i]){
-                                    for(var k=0;k<clan[j].canJob.length;k++){
-                                        $qe('#'+clan[j].canJob[k]).disabled=false;
+                    for (var i = 0; i < sel.length; i++) {
+                        (function (i) {
+                            for (var j = 0; j < clan.length; j++) {
+                                if (clan[j].clanEn == sel[i]) {
+                                    for (var k = 0; k < clan[j].canJob.length; k++) {
+                                        $qe('#' + clan[j].canJob[k]).disabled = false;
                                     }
                                 }
                             }
                         })(i);
-                        
+
                     }
-        	    }
-        	    for(var i=0;i<clans.length;i++){
-        	        clans[i].addEventListener('change',function(){
-        	            cFn();
-        	        },false);
-        	        $qe('#all-clan').addEventListener('change',function(){
+                }
+                for (var i = 0; i < clans.length; i++) {
+                    clans[i].addEventListener('change', function () {
                         cFn();
-                    },false);
-        	    }
-        	    
-        	}
-        	checkClan();
-        	
-        	function jobColor(jobEn){
-        	    switch (jobEn){
+                    }, false);
+                    $qe('#all-clan').addEventListener('change', function () {
+                        cFn();
+                    }, false);
+                }
+
+            }
+            checkClan();
+
+            function jobColor(jobEn) {
+                switch (jobEn) {
                     case 'lr':
                         return '#AAD372 '
                         break;
@@ -362,68 +368,69 @@
                         return '#ff7c0a'
                         break;
                 }
-        	}
-        	
-        	
-        	var bOff=false;
-        	$qe('#btn').onclick=function(){
-        	    if(bOff) return;
-        	    bOff=!bOff;
-        	    var clanArr=[];    //选中的clan
-        	    var jobArr=[];    //选中job的项
-        	    if($qe('.icon img')){
-        	        $qe('.icon').removeChild($qe('.icon img'));
-        	    }
-        	    
-        	    for(var i=0;i<cs.length;i++){
-        	        if(cs[i].checked){
-        	            jobArr.push({'jobEn':cs[i].name,'jobName':cs[i].value});
-        	        }
-        	    }
-        	    for(var i=0;i<clans.length;i++){
-        	        if(clans[i].checked){
-        	            for(var j=0;j<clan.length;j++){
-        	                if(clans[i].name==clan[j].clanEn){
-        	                    clanArr.push(clan[j]);
-        	                }
-        	            }
+            }
+
+
+            var bOff = false;
+            $qe('#btn').onclick = function () {
+                if (bOff) return;
+                bOff = !bOff;
+                var clanArr = [];    //选中的clan
+                var jobArr = [];    //选中job的项
+                if ($qe('.icon img')) {
+                    $qe('.icon').removeChild($qe('.icon img'));
+                }
+
+                for (var i = 0; i < cs.length; i++) {
+                    if (cs[i].checked) {
+                        jobArr.push({ 'jobEn': cs[i].name, 'jobName': cs[i].value });
+                    }
+                }
+                for (var i = 0; i < clans.length; i++) {
+                    if (clans[i].checked) {
+                        for (var j = 0; j < clan.length; j++) {
+                            if (clans[i].name == clan[j].clanEn) {
+                                clanArr.push(clan[j]);
+                            }
+                        }
                         //clanArr.push({'clanEn':clans[i].name,'clanName':clans[i].value});
                     }
-        	    }
-        	    if(jobArr.length==0){
-        	        alert('还没选呢!');
-        	        return;
-        	    }
-        	    //console.log(clanArr)
-        	    var x=60;
-        	    function active(){      
-        	        if(x==0) return;
-        	        x--;
-        	        setTimeout(function(){
-                        var nj=job[x%job.length].jobEn;
-                        $qe('.res').innerText=clan[x%clan.length].clanName+' '+job[x%job.length].jobName;
-                        $qe('.res').style.color=jobColor(nj);
-                        if(x==0){
-                            var resj=jobArr[rnd(0,jobArr.length)];
-                            var resClanItem=[];
-                            for(var i=0;i<clanArr.length;i++){
-                                if(clanArr[i].canJob.join('').indexOf(resj.jobEn)!=-1){
+                }
+                if (jobArr.length == 0) {
+                    alert('还没选呢!');
+                    return;
+                }
+                //console.log(clanArr)
+                var x = 60;
+                function active() {
+                    if (x == 0) return;
+                    x--;
+                    setTimeout(function () {
+                        var nj = job[x % job.length].jobEn;
+                        $qe('.res').innerText = clan[x % clan.length].clanName + ' ' + job[x % job.length].jobName;
+                        $qe('.res').style.color = jobColor(nj);
+                        if (x == 0) {
+                            var resj = jobArr[rnd(0, jobArr.length)];
+                            var resClanItem = [];
+                            for (var i = 0; i < clanArr.length; i++) {
+                                if (clanArr[i].canJob.join('').indexOf(resj.jobEn) != -1) {
                                     resClanItem.push(clanArr[i]);
                                 }
                             }
-                            
-                            var resClan=resClanItem[rnd(0,resClanItem.length)];
-                            $qe('.res').innerText=resClan.clanName+' '+resj.jobName;
-                            $qe('.res').style.color=jobColor(resj.jobEn);
-                            $qe('.icon').innerHTML='<img src="icon/'+resj.jobEn+'.png" />';
-                            bOff=!bOff;
+
+                            var resClan = resClanItem[rnd(0, resClanItem.length)];
+                            $qe('.res').innerText = resClan.clanName + ' ' + resj.jobName;
+                            $qe('.res').style.color = jobColor(resj.jobEn);
+                            $qe('.icon').innerHTML = '<img src="icon/' + resj.jobEn + '.png" />';
+                            bOff = !bOff;
                         }
-        	            active();
-        	        },Math.abs(Math.pow(-1.006,x)*70));
-        	    }        	    
-        	    active();
-        	}
-        	
+                        active();
+                    }, Math.abs(Math.pow(-1.006, x) * 70));
+                }
+                active();
+            }
+
         </script>
     </body>
+
 </html>
