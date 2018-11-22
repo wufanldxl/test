@@ -39,6 +39,40 @@
 				background: #efefef;
 			
 			}
+			
+			.progress{
+				display: none;
+				height: 20px;
+				background: #262626;
+				padding: 5px;
+				border-radius: 20px;
+				width: 500px;
+				margin-left: -250px;
+				position: fixed;
+				top: 40%;
+				left: 50%;
+			}
+			
+			.progress-bar{
+				width: 0;
+				height: 100%;
+				background-color: #5bc0de;
+				border-radius: 20px;
+				background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+				background-size: 40px 40px;
+				transition: width .6s ease;
+				animation: progress-bar-animate 0.5s reverse linear infinite;
+			}
+			
+			@keyframes progress-bar-animate{
+				0%{
+					background-position: 40px 0;
+				}
+				
+				100%{
+					background-position: 0 0;
+				}
+			}
         </style>
     </head>
 
@@ -56,6 +90,10 @@
         <input type="button" name="" id="btn" value="我该玩那个" />
         <p class="res"></p>
         <div class="icon"></div>
+		
+		<div class="progress">
+			<div class="progress-bar" style="width: 50%;"></div>
+		</div>
 
         <script type="text/javascript">
             function rnd(n, m) {
@@ -65,13 +103,16 @@
             function $qe(sel) {
                 return document.querySelector(sel);
             }
+			
+			function setProgress(s){
+				$qe('.progress').style.width=s
+			}
 
             function loadImages(json, fn, spFn) {
                 var total = 0;    //所有的
                 var count = 0;    //完成的
                 var speed = 0;
                 var images = {};
-                console.log(json)
                 for (var name in json) {
                     total++;
                     var url = json[name];
@@ -79,7 +120,6 @@
                     oImg.src = url;
                     (function (name) {
                         oImg.onload = function () {
-                            console.log(this)
                             images[name] = this;
                             count++;
                             speed = count / total;
@@ -88,7 +128,7 @@
                                 fn && fn(images);
                             }
                         };
-                    })(name);
+                    })(name)
                 }
             }
 
@@ -190,7 +230,7 @@
                 },
                 {
                     clanName: '至高岭牛头人',
-                    clanEn: 'highmountain）tauren',
+                    clanEn: 'highmountain_tauren',
                     canJob: ['xd', 'lr', 'ws', 'sm', 'zs']
                 },
                 {
@@ -211,7 +251,16 @@
                 imgs[job[i].jobEn] = 'icon/' + job[i].jobEn + '.png'
             }
 
-            loadImages(imgs)
+
+			$qe('.progress').style.display='block'
+            loadImages(imgs,
+				function(){
+					$qe('.progress').style.display='none'
+				},function(cont){
+					var s=Math.floor(cont*100)+'%';
+					setProgress(s)
+				}
+			)
 
             //创建种族
             function creatClan(clan) {
