@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>职业选择器</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type="text/css">
+            label {
+                margin-right: 10px;
+            }
+
+            .res {
+                font-size: 80px;
+                font-family: "微软雅黑";
+                font-weight: bold;
+                text-align: center;
+                text-shadow: #000 0px 5px 8px;
+                margin: 0;
+            }
+
+            img {
+                vertical-align: top;
+            }
+
+            .icon {
+                text-align: center;
+            }
+
+            .icon img {
+                width: 395px;
+            }
+			
+			#btn{
+				width: 100px;
+				height: 25px;
+				border: 1px solid #000;
+				border-radius: 5px;
+				background: #efefef;
+			
+			}
+			.progress_box{
+				/* display: none; */
+				position: fixed;
+				top: 40%;
+				left: 0;
+				width: 100%;
+				text-align: center;
+			}
+			
+			.progress{
+				height: 20px;
+				background: #262626;
+				padding: 5px;
+				border-radius: 20px;
+				width: 60%;
+				margin: 0 auto;
+				
+			}
+			
+			.progress-bar{
+				width: 0;
+				height: 100%;
+				background-color: #5bc0de;
+				border-radius: 20px;
+				background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+				background-size: 40px 40px;
+				transition: width .6s ease;
+				animation: progress-bar-animate 0.5s reverse linear infinite;
+			}
+
+
+			@media screen and (max-width: 600px)  {
+				.progress{
+					width: 80%;
+				}
+			}
+			@media screen and (min-width: 601px) {
+				.progress{
+					width: 600px;
+				}
+			}
+			
+			@keyframes progress-bar-animate{
+				0%{
+					background-position: 40px 0;
+				}
+				
+				100%{
+					background-position: 0 0;
+				}
+			}
+        </style>
+    </head>
+
+    <body>
+        <div class="checkbox-clan">
+
+        </div>
+        <input type="checkbox" name="all-clan" id="all-clan" value="" /><label for="all-clan">全选</label>
+        <hr />
+        <div class="checkbox-job">
+
+        </div>
+        <input type="checkbox" name="all-job" id="all-job" value="" /><label for="all-job">全选</label>
+        <hr />
+        <input type="button" name="" id="btn" value="我该玩那个" />
+        <p class="res"></p>
+        <div class="icon"></div>
+		
+		<div class="progress_box">
+			<p>正在加载职业图片。。。</p>
+			<div class="progress">
+				<div class="progress-bar"></div>
+			</div>
+		</div>
+		
+        <script type="text/javascript">
+            function rnd(n, m) {
+                return parseInt(n + Math.random() * (m - n));
+            }
+
+            function $qe(sel) {
+                return document.querySelector(sel);
+            }
+			
+			function setProgress(s){
+				$qe('.progress-bar').style.width=s
+			}
+
+            function loadImages(json, fn, spFn) {
+                var total = 0;    //所有的
+                var count = 0;    //完成的
+                var speed = 0;
+                var images = {};
+                for (var name in json) {
+                    total++;
+                    var url = json[name];
+                    var oImg = new Image();
+                    oImg.src = url;
+                    (function (name) {
+                        oImg.onload = function () {
+                            images[name] = this;
+                            count++;
+                            speed = count / total;
+                            spFn && spFn(speed);
+                            if (count == total) {
+                                fn && fn(images);
+                            }
+                        };
+                    })(name)
+                }
+            }
+
+            var job = {
+                lr:{ 'jobEn': 'lr', 'jobName': '猎人' },
+                fs:{ 'jobEn': 'fs', 'jobName': '法师' },
+                qs:{ 'jobEn': 'qs', 'jobName': '圣骑士' },
+                ms:{ 'jobEn': 'ms', 'jobName': '牧师' },
+                dk:{ 'jobEn': 'dk', 'jobName': '死亡骑士' },
+                zs:{ 'jobEn': 'zs', 'jobName': '战士' },
+                ss:{ 'jobEn': 'ss', 'jobName': '术士' },
+                sm:{ 'jobEn': 'sm', 'jobName': '萨满' },
+                dz:{ 'jobEn': 'dz', 'jobName': '盗贼' },
+                ws:{ 'jobEn': 'ws', 'jobName': '武僧' },
+                dh:{ 'jobEn': 'dh', 'jobName': '恶魔猎手' },
+                xd:{ 'jobEn': 'xd', 'jobName': '德鲁伊' }
+            };
+
+            var clan = {
+                'human':{
+                    clanName: '人类',
+                    clanEn: 'human',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws']
+                },
+                'dwarf':{
+                    clanName: '矮人',
+                    clanEn: 'dwarf',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws', 'sm']
+                },
+                'night_elf':{
+                    clanName: '暗夜精灵',
+                    clanEn: 'night_elf',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'dz', 'ws', 'xd', 'dh']
+                },
+                'gnome':{
+                    clanName: '侏儒',
+                    clanEn: 'gnome',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws']
+                },
+                'draenei':{
+                    clanName: '德莱尼',
+                    clanEn: 'draenei',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ws', 'sm']
+                },
+                'worgen':{
+                    clanName: '狼人',
+                    clanEn: 'worgen',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'xd']
+                },
+                'pandaren':{
+                    clanName: '熊猫人',
+                    clanEn: 'pandaren',
+                    canJob: ['lr', 'fs', 'ms', 'zs', 'dz', 'ws', 'sm']
+                },
+                'orc':{
+                    clanName: '兽人',
+                    clanEn: 'orc',
+                    canJob: ['lr', 'fs', 'dk', 'zs', 'ss', 'dz', 'ws', 'sm']
+                },
+                'undead':{
+                    clanName: '亡灵',
+                    clanEn: 'undead',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws']
+                },
+                'tauren':{
+                    clanName: '牛头人',
+                    clanEn: 'tauren',
+                    canJob: ['lr', 'ms', 'dk', 'zs', 'ws', 'xd', 'sm', 'qs']
+                },
+                'troll':{
+                    clanName: '巨魔',
+                    clanEn: 'troll',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'ws', 'sm', 'xd']
+                },
+                'blood_elf':{
+                    clanName: '血精灵',
+                    clanEn: 'blood_elf',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'dk', 'zs', 'ws', 'dh', 'dz', 'ss']
+                },
+                'goblin':{
+                    clanName: '地精',
+                    clanEn: 'goblin',
+                    canJob: ['lr', 'fs', 'ms', 'dk', 'zs', 'ss', 'dz', 'sm']
+                },
+                'dark_iron_dwarf':{
+                    clanName: '黑铁矮人',
+                    clanEn: 'dark_iron_dwarf',
+                    canJob: ['lr', 'fs', 'ws', 'qs', 'ms', 'dz', 'sm', 'ss', 'zs']
+                },
+                'void_elf':{
+                    clanName: '虚空精灵',
+                    clanEn: 'void_elf',
+                    canJob: ['lr', 'fs', 'ws', 'ms', 'dz', 'ss', 'zs']
+                },
+                'lightforged_draenei':{
+                    clanName: '光铸德莱尼',
+                    clanEn: 'lightforged_draenei',
+                    canJob: ['lr', 'fs', 'qs', 'ms', 'zs']
+                },
+                'highmountain_tauren':{
+                    clanName: '至高岭牛头人',
+                    clanEn: 'highmountain_tauren',
+                    canJob: ['xd', 'lr', 'ws', 'sm', 'zs']
+                },
+                'maghar_orc':{
+                    clanName: '玛格汉兽人',
+                    clanEn: 'maghar_orc',
+                    canJob: ['lr', 'fs', 'ws', 'ms', 'dz', 'sm', 'zs']
+                },
+                'nightborne':{
+                    clanName: '夜之子',
+                    clanEn: 'nightborne',
+                    canJob: ['lr', 'fs', 'ws', 'ms', 'dz', 'ss', 'zs']
+                }
+
+            }
+
+            var imgs = {};
+            for (var i in job) {
+                imgs[job[i].jobEn] = 'icon/' + job[i].jobEn + '.png'
+            }
+
+			$qe('.progress_box').style.display='block'
+            loadImages(imgs,
+				function(){
+					$qe('.progress_box').style.display='none'
+				},function(cont){
+					var s=Math.floor(cont*100)+'%';
+					setProgress(s)
+				}
+			)
+
+            //创建种族
+            function creatClan(clan) {
+                var chbox = $qe('.checkbox-clan');
+                for (var i in clan) {
+                    var c = document.createElement('input');
+                    c.type = 'checkbox';
+                    c.name = clan[i].clanEn;
+                    c.id = clan[i].clanEn;
+                    c.value = clan[i].clanName;
+                    chbox.appendChild(c);
+                    var l = document.createElement('label');
+                    l.htmlFor = clan[i].clanEn;
+                    l.innerHTML = clan[i].clanName;
+                    chbox.appendChild(l);
+                }
+            }
+            creatClan(clan);
+
+            //创建职业
+            function creatJob(job) {
+                var chbox = $qe('.checkbox-job');
+                for (var i in job) {
+                    var c = document.createElement('input');
+                    c.type = 'checkbox';
+                    c.name = job[i].jobEn;
+                    c.id = job[i].jobEn;
+                    c.value = job[i].jobName;
+                    c.disabled = true;
+                    chbox.appendChild(c);
+                    var l = document.createElement('label');
+                    l.htmlFor = job[i].jobEn;
+                    l.innerHTML = job[i].jobName;
+                    chbox.appendChild(l);
+                }
+
+            }
+            creatJob(job);
+
+            //联选
+            function checkAll(checks, all) {
+                all.addEventListener('change', function () {
+                    var n = 0;
+                    if (this.checked) {
+                        for (var i = 0; i < checks.length; i++) {
+                            if (checks[i].disabled == false) {
+                                n++;
+                                checks[i].checked = true;
+                            }
+                        }
+                        if (n == 0) {
+                            alert('没有符合的职业');
+                            this.checked = false;
+                            return false;
+                        }
+                    } else {
+                        for (var i = 0; i < checks.length; i++) {
+                            checks[i].checked = false;
+                        }
+                    }
+                }, false);
+
+                var n = 0;
+                for (var i = 0; i < checks.length; i++) {
+                    checks[i].addEventListener('change', function () {
+                        n = 0;
+                        for (var i = 0; i < checks.length; i++) {
+                            if (checks[i].checked) {
+                                n++;
+                            }
+                        }
+                        if (n == checks.length) {
+                            all.checked = true;
+                        } else {
+                            all.checked = false;
+                        }
+                    }, false);
+                }
+            }
+
+
+            var clans = document.querySelectorAll('.checkbox-clan [type=checkbox]');
+            checkAll(clans, $qe('#all-clan'));
+
+            var cs = document.querySelectorAll('.checkbox-job [type=checkbox]');
+            checkAll(cs, $qe('#all-job'));
+
+            function checkClan() {
+                var sel = [];
+                function cFn() {
+                    sel = [];
+                    for (var j = 0; j < clans.length; j++) {
+                        if (clans[j].checked) {
+                            sel.push(clans[j].name);
+                        }
+                    }
+                    for (var j = 0; j < cs.length; j++) {
+                        cs[j].disabled = true;
+                        cs[j].checked = false;
+                        $qe('#all-job').checked = false;
+                    }
+                    for (var i = 0; i < sel.length; i++) {
+                        (function (i) {
+                            for (var k = 0; k < clan[sel[i]].canJob.length; k++) {
+                                $qe('#' + clan[sel[i]].canJob[k]).disabled = false;
+                            }
+                        })(i);
+
+                    }
+                }
+                for (var i = 0; i < clans.length; i++) {
+                    clans[i].addEventListener('change', function () {
+                        cFn();
+                    }, false);
+                    $qe('#all-clan').addEventListener('change', function () {
+                        cFn();
+                    }, false);
+                }
+
+            }
+            checkClan();
+
+            function jobColor(jobEn) {
+                switch (jobEn) {
+                    case 'lr':
+                        return '#AAD372 '
+                        break;
+                    case 'fs':
+                        return '#68CCEF'
+                        break;
+                    case 'qs':
+                        return '#F48CBA'
+                        break;
+                    case 'ms':
+                        return '#F0EBE0'
+                        break;
+                    case 'dk':
+                        return '#C41E3B'
+                        break;
+                    case 'zs':
+                        return '#C69B6D'
+                        break;
+                    case 'ss':
+                        return '#9382C9'
+                        break;
+                    case 'sm':
+                        return '#2359FF'
+                        break;
+                    case 'dz':
+                        return '#FFF468'
+                        break;
+                    case 'ws':
+                        return '#00ffba'
+                        break;
+                    case 'dh':
+                        return '#a330c9'
+                        break;
+                    case 'xd':
+                        return '#ff7c0a'
+                        break;
+                }
+            }
+
+
+            var bOff = false;
+            $qe('#btn').onclick = function () {
+                if (bOff) return;
+                bOff = !bOff;
+                var clanArr = [];    //选中的clan
+                var jobArr = [];    //选中job的项
+                if ($qe('.icon img')) {
+                    $qe('.icon').removeChild($qe('.icon img'));
+                }
+
+                for (var i = 0; i < cs.length; i++) {
+                    if (cs[i].checked) {
+                        //jobArr.push({ 'jobEn': cs[i].name, 'jobName': cs[i].value });
+                        jobArr.push(cs[i].name)
+                    }
+                }
+                for (var i = 0; i < clans.length; i++) {
+                    if (clans[i].checked) {
+                        clanArr.push(clan[clans[i].name]);
+                    }
+                }
+                if (jobArr.length == 0) {
+                    alert('还没选呢!');
+					bOff = !bOff;
+                    return;
+                }
+                var sj=[];  //根据选择，组合出来的所有可能的种族职业组合
+                for(var i=0; i<clanArr.length; i++){
+                    clanArr[i].canJob.forEach(function(item){
+                        if(jobArr.indexOf(item)>-1){
+                            sj.push({cj:clanArr[i].clanName+' '+job[item].jobName,job:item})
+                        }
+                    })
+                }
+
+                var x = 60;
+                function active() {
+                    if (x == 0) return;
+                    x--;
+                    setTimeout(function () {
+                        var nj = sj[rnd(0, sj.length)]
+                        $qe('.res').innerText = nj.cj;
+                        $qe('.res').style.color = jobColor(nj.job);
+                        if (x == 0) {
+                            $qe('.icon').innerHTML = '<img src="icon/' + nj.job + '.png" />';
+                            bOff = !bOff;
+                        }
+                        active();
+                    }, Math.abs(Math.pow(-1.006, x) * 70));
+                }
+                active();
+            }
+
+        </script>
+    </body>
+
+</html>
