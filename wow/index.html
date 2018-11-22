@@ -30,6 +30,15 @@
             .icon img {
                 width: 395px;
             }
+			
+			#btn{
+				width: 100px;
+				height: 25px;
+				border: 1px solid #000;
+				border-radius: 5px;
+				background: #efefef;
+			
+			}
         </style>
     </head>
 
@@ -398,6 +407,7 @@
                 }
                 if (jobArr.length == 0) {
                     alert('还没选呢!');
+					bOff = !bOff;
                     return;
                 }
                 //console.log(clanArr)
