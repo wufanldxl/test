@@ -39,18 +39,23 @@
 				background: #efefef;
 			
 			}
+			.progress_box{
+				/* display: none; */
+				position: fixed;
+				top: 40%;
+				left: 0;
+				width: 100%;
+				text-align: center;
+			}
 			
 			.progress{
-				display: none;
 				height: 20px;
 				background: #262626;
 				padding: 5px;
 				border-radius: 20px;
-				width: 500px;
-				margin-left: -250px;
-				position: fixed;
-				top: 40%;
-				left: 50%;
+				width: 60%;
+				margin: 0 auto;
+				
 			}
 			
 			.progress-bar{
@@ -62,6 +67,18 @@
 				background-size: 40px 40px;
 				transition: width .6s ease;
 				animation: progress-bar-animate 0.5s reverse linear infinite;
+			}
+
+
+			@media screen and (max-width: 600px)  {
+				.progress{
+					width: 80%;
+				}
+			}
+			@media screen and (min-width: 601px) {
+				.progress{
+					width: 600px;
+				}
 			}
 			
 			@keyframes progress-bar-animate{
@@ -91,10 +108,13 @@
         <p class="res"></p>
         <div class="icon"></div>
 		
-		<div class="progress">
-			<div class="progress-bar"></div>
+		<div class="progress_box">
+			<p>正在加载职业图片。。。</p>
+			<div class="progress">
+				<div class="progress-bar"></div>
+			</div>
 		</div>
-
+		
         <script type="text/javascript">
             function rnd(n, m) {
                 return parseInt(n + Math.random() * (m - n));
@@ -252,10 +272,10 @@
             }
 
 
-			$qe('.progress').style.display='block'
+			$qe('.progress_box').style.display='block'
             loadImages(imgs,
 				function(){
-					$qe('.progress').style.display='none'
+					$qe('.progress_box').style.display='none'
 				},function(cont){
 					var s=Math.floor(cont*100)+'%';
 					setProgress(s)
