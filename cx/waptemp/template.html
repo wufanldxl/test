@@ -1,0 +1,633 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<script src="//file.caixin.com/webjs/content/redirect.js"></script>
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="x-rim-auto-match" content="none" />
+		#set($categorys=$dataTools.getSubjectForID($entity.pid))
+		#if($channel.id==145)
+		<title>$dataTools.htmlEscape($title,' ')</title>
+		#elseif($categorys.pid==100000169)
+		<title>$dataTools.htmlEscape($title,' ')</title>
+		#elseif($entity.category.indexOf("100000091")>0)
+		<title>${title}</title>
+		#elseif($subject.id==100300201)
+		<title>${title}</title>
+		#elseif($channel.id==134)
+		<title>${title}</title>
+		#else
+		#set($descrip = $stringUtils.replace($channel.desc,'频道',''))
+		<title>$dataTools.htmlEscape($title,' ')</title>
+		#end
+		<meta name="keywords" content="$!{keyword},$!{after}" />
+		<meta name="applicable-device" content="mobile">
+		<meta name="description" content="$!{abstract}" />
+		<meta name="apple-itunes-app" content="app-id=356023612" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="applicable-device" content="mobile">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="format-detection" content="telephone=no">
+		<base target="_self" />
+		<link rel="stylesheet" href="//file.caixin.com/file/content/css/mobile_common_v2_new.css">
+		<link rel="stylesheet" href="//file.caixin.com/file/content/css/mobile_news_v2.css" />
+		<link rel="stylesheet" href="//file.caixin.com/static/mh5/css/costpopup_news.css" />
+		<link rel="stylesheet" href="//file.caixin.com/file/mobile/audio/css/m_audio.css">
+		<link rel="stylesheet" href="//file.caixin.com/file/mobile/content/css/m-content-v3.css" />
+		#parse("/frag/news_infos_v1.inc")
+		<style>
+			.logo{width:90px;margin:0 auto;}	
+	.logo a{float:left;width:42px;height:45px;background:url(//file.caixin.com/file/content/images/mobile/logo.png) no-repeat -18px center;background-size:81px 33px;margin:0;}
+	.logo span{float:left;height:45px;line-height:43px;margin-left:5px;font-size:21px;color:#ffffff;}
+  </style>
+		<script src="//file.caixin.com/webjs/jquery-1.7.2.min.js"></script>
+		<script src="//file.caixin.com/webjs/wap/flexible.js"></script>
+		<script src="//file.caixin.com/images/phpapp/user/scripts/cookie.js"></script>
+		<script src="//file.caixin.com/webjs/content/appreciate.js"></script>
+		<script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script src="//file.caixin.com/webjs/get_wx_config.js"></script>
+		<script>
+			var srcinfoid = $entityid;#
+			set($ispro = $numberUtils.toInt($dataTools.getProperty($entity, "pro_view")))# set($fromchannel = $T.prop($entity,
+				"from_channel", "0"))
+			var entity = {
+				"id": $entityid,
+				"mob": "m",
+				"type": $entitype,
+				"mode": $type,
+				"link": "$pclink",
+				"media": $media.id,
+				"cdesc": "$descrip",
+				"subject": $subject.id,
+				"channel": $channel.id,
+				"guiding": "$guiding",
+				"abstract": "$T.replaceQuotes($abstract)",
+				"category": "$entity.category",
+				"title": "$T.replaceQuotes($title)",
+				"author": "$author",
+				"ispro": $ispro,
+				"fromchannel": "$fromchannel",
+				"redpacket": "$T.prop($entity,'redpacket_share','0')",
+				"attr": $attr,
+				"videoDesc": "$T.prop($entity,'video_desc',' ')",
+				"share_logo": "$T.prop($entity,'share_logo','')",
+				"disable_copy": "$T.prop($entity,'disable_copy','0')",
+				"appOpen": $T.checkAppOpen($entity)
+			};
+			var srcinfoid = $entityid;
+			var media = $media.id;
+			var price = $T.prop($entity, 'singlePay_price', '0');
+		</script>
+		<!-- pro -->
+		<script type="text/javascript">
+			jQuery(function() {
+				changeLink();#
+				if ($attr >= 4 && $attr <= 5)#
+					if ($attr == 4)
+						isLogin();#
+					else
+						// readyContentInfo();
+						# end# end
+			});
+		</script>
+		<!-- 判断是否含有视频，如有，微信分享时标题后加：(附视频) -->
+		#if(($vodflv && $vodflv!="" && !$vodflv.endsWith(".mp3")) || ($vodmpx && $vodmpx!="" && !$vodmpx.endsWith(".mp3")))
+		<script>
+			var isExistsVideo = true;
+		</script>
+		#else
+		<script>
+			var isExistsVideo = false;
+		</script>
+		#end
+		<script src="//file.caixin.com/file/content/js/mobile_content.js"></script>
+		<script type="text/javascript">
+			jQuery(function() {
+				addMagazineJourContact("author");
+				addCommJourContact("Main_Content_Val", "strong");
+				addCommJourContact('Main_Content_Val', 'b');
+				initShare();
+			});
+		</script>
+		<!--\#include virtual="/frag/mobile_article_commons_mob.inc"-->
+		<!--\#include virtual="/frag/mobile_commons_mob.inc"-->
+	</head>
+	<body>
+		#if($entity.channel==176)
+		<img style="width:0;height:0;overflow:hidden;display:block" src="//file.caixin.com/static/mh5/images/prologo.jpg" alt="财新传媒" />
+		#else
+		<img style="width:0;height:0;overflow:hidden;display:block" src="//file.caixin.com/file/weixin/cx_logo.jpg" alt="财新传媒" />
+		#end
+		<div class="main-all">
+			<!-- head Begin -->
+			<script>
+				if (location.href.indexOf('database.caixin') != -1) {
+					document.write('<section class="common_top common_top_spel">');
+				} else {
+					document.write('<section class="common_top">');
+				}
+			</script>
+			<!--\#include virtual="/frag/mobile_chahead_mobV2.inc"-->
+			#set($fromChannel=$T.prop($entity,'from_channel','0'))
+			<!-- FROM: $fromChannel -->
+			#if($fromChannel=="11"||$fromChannel=="12"||$fromChannel=="13"||$fromChannel=="14")
+			<div class="title-line">
+				<a href="http://m.database.caixin.com/m/news_list/">资讯</a>
+				<em></em></div>
+			#else
+			#set($channelDescrip = $stringUtils.replace($channel.desc,'频道',''))
+			#if($channel.id != 124)
+			#if($subject.id==100891361||$channel.id==168)
+			<div class="title-line cebm-line">
+				#else
+				<div class="title-line">
+					#end
+					#if($entity.category.indexOf("100108115")>0)
+					<a href="">中国改革</a>
+					#elseif($entity.category.indexOf("100103952")>0)
+					<a href="">财新周刊</a>
+					#elseif($entity.category.indexOf("100206855")>0)
+					<a href="">比较</a>
+					#elseif($entity.channel == 176)
+					#set($subject =$T.getSubjectByNewsId($entityid))
+					<a href="$subject.url">$!{subject.desc}</a>
+					#else
+					<a href="http://$channel.name">$channelDescrip</a>
+					#end
+					<em></em></div>
+				#end
+				#end
+				</section>
+				<!-- head End  -->
+				<div id="cons" class="cons">
+					<!--文章页顶部广告B -->
+					<!--\#include virtual="/frag/mobile_newsTop_ad.inc"-->
+					<!--文章页顶部广告E -->
+					<h1 class="news-title">${title}
+						#if($entity.attr == 5)
+						<em class="key-icon"></em>
+						#end
+						#if(!$dataTools.isCharge($entity)&&"$T.prop($entity,'fee_time','')" != "")
+						#set($feeDuration = "$T.prop($entity,'fee_duration','')")
+						<em class="icon_time_$feeDuration"></em>
+						#end
+					</h1>
+					<div class="news-info">
+						<div id="artInfo" class="news-date">$dataTools.getFormatDateTime($time,"yyyy年MM月dd日 HH:mm")</div>
+						<div id="fontSize" class="news-font" onclick="changeContentFontSize()">T中</div>
+						#set($hasEnglish=$dataTools.getProperty($entity,"newsrelat_id"))
+						#if($hasEnglish && $hasEnglish!="")
+						#set($engUrls=$dataTools.getResultsFromReg($hasEnglish, ";"))
+						<div class="news-enlink">
+							<a href="$dataTools.getNewsForID($numberUtils.createNumber($engUrls.get(0))).getUrl(true)">English</a>
+						</div>
+						#end
+					</div>
+					<!-- style="font-size:17px" -->
+					#if($stringUtils.isNotBlank($abstract))
+					<div class="news-lead" id="subhead">$abstract</div>
+					#end
+					<!-- 视频  -->
+					#if($vodflv && $vodflv!="")
+					<div class="media_video" #if($entity.attr>=4 && $entity.attr <= 6)style="display:none" #end>
+							$dataTools.replaceAll($vodflv,"width=([^&]*)&height=([^&]*)&","width=300&height=265&")
+					</div>
+					#elseif($vodmpx && $vodmpx!=""&&$vodmpx.endsWith(".mp3"))
+					<!-- 支持音频 -->
+					<audio class="news-audio" src="$vodmpx" controls="controls" #if($entity.attr>=4 && $entity.attr <= 6)style="display:none;"
+						 #end></audio>
+					#elseif($vodmpx && $vodmpx!="" &&$vodmpx.endsWith(".mp4"))
+					<div class="media_video" #if($entity.attr>=4 && $entity.attr <= 6)style="display:none" #end>
+							<script>
+								var url = "$vodmpx";
+								var topic = "$title";
+							</script>
+							<script src="//file.caixin.com/webjs/content/player_noauto.js"> </script>
+					</div>
+					#elseif($vodmpx && $vodmpx!="")
+					<div class="media_video" #if($entity.attr>=4 && $entity.attr <= 6)style="display:none" #end>
+							$vodmpx
+					</div>
+					#end
+					<script>
+						$(".media_video").height(Math.ceil($(".media_video").width() * 9 / 16))
+					</script>
+					<!-- audio begin -->
+					#set($hasAudio=$dataTools.getProperty($entity,"is_audio"))
+					#set($audioStatus=$dataTools.getProperty($entity,"audio_status"))
+					#if($hasAudio && $hasAudio!="" && $hasAudio!="0")
+					#if($audioStatus && $audioStatus=="2")
+					#set($audioUrl=$dataTools.getProperty($entity,"audio_url"))
+					#if($audioUrl && $audioUrl!="")
+					<script>
+						var voiceSrc = "${audioUrl}";
+						var attr = $!{
+							attr
+						};
+					</script>
+					<script src="//file.caixin.com/webjs/audio/audioPlayerVoiceConsMobile.js"></script>
+					#end
+					#end
+					#end
+					<!-- audio end -->
+					<!--配图操作  -->
+					<!-- 获得配图的对象 -->
+					#set($picObject = $dataTools.getPictureForNews($entity,0))
+					<!--获得组图图片对象 -->
+					#set($picObjects= $dataTools.getPicturesForNews($entity))
+					#if($picObject)
+					#if(!$vodflv && !$vodmpx)
+					<div class="news-photo">
+						#if($picObjects.size()>1)
+						<a class="news-photo-link">
+							<img src="$dataTools.getNewSizeForPicUrl($picObject.url," _480_320")" alt="news">
+							<em></em>
+						</a>
+						#else
+						<img src="$dataTools.getNewSizeForPicUrl($picObject.url," _480_320")" alt="news">
+						<a class="news-photo-original" href="$picObject.url">原图</a>
+						#end
+						#if($stringUtils.isNotBlank($picObject.desc) && $picObject.desc!="null" && $picObject.desc!="picture" )
+						<span class="news-photo-txt">$picObject.desc</span>
+						#end
+					</div>
+					#end
+					#end
+					#if($author && $entity.magazineSheetId>0)
+					<div class="author">
+						#if($stringUtils.indexOf($author,'记者')>=0 || $stringUtils.indexOf($author,'作者')>=0)
+						$media.desc
+						#end
+						$author
+					</div>
+					#end
+					<article class="news-con" id="Main_Content_Val">
+						#if($attr==5 || $attr==4)
+						#set($singlePayMsg = $dataTools.getProperty($entity,"singlePay_title"))
+						#if($singlePayMsg && $singlePayMsg!="" && $attr==5)
+						$singlePayMsg
+						#else
+						#set($thetemp = $dataTools.switchKeywordLink($setBean,$entityid,$thetext))
+						#set($thetemp = $stringUtils.replace($thetemp,"//search.","//m.search."))
+						#set($thetemp = $stringUtils.replace($thetemp,'/search.jsp','/mobile.jsp'))
+						#set($thetemp = $stringUtils.replace($thetemp,'target=_blank','target="_self"'))
+						#set($thetemp = $stringUtils.replace($thetemp,'target="_blank"','target="_self"'))
+						#set($thetemp = $stringUtils.replace($thetemp,"target='_blank'",'target="_self"'))
+						#if ($thetemp && $thetemp!="")
+						##数据+不显示正文
+						#if(!($fromChannel=="11"||$fromChannel=="12"||$fromChannel=="13"||$fromChannel=="14"||$fromChannel=="22"))
+						$newsTools.processNewsAttr($thetemp.replaceAll("<[Ss][Pp][Aa][Nn].*?>","").replaceAll("</[Ss][Pp][Aa][Nn]>",""),300)
+							#end
+							#end
+							#end
+							#else
+							#set($thetemp = $dataTools.switchKeywordLink($setBean,$entityid,$thetext))
+							#set($thetemp = $stringUtils.replace($thetemp,"//search.","//m.search."))
+							#set($thetemp = $stringUtils.replace($thetemp,'/search.jsp','/mobile.jsp'))
+							#set($thetemp = $stringUtils.replace($thetemp,'target=_blank','target="_self"'))
+							#set($thetemp = $stringUtils.replace($thetemp,'target="_blank"','target="_self"'))
+							#set($thetemp = $stringUtils.replace($thetemp,"target='_blank'",'target="_self"'))
+							$thetemp
+							#end
+					</article>
+				</div>
+				<!-- 单篇文章收费提示框 b -->
+
+				#sfrag('global' 'common-pay-layer' '通用文章页收费碎片')
+
+				<!-- 单篇文章收费提示框 e -->
+				<!-- 注册阅读逻辑 start -->
+				#if($attr==4)
+				<!--\#include virtual="/frag/mobile_reform_mob.inc"-->
+				#end
+				<!-- 注册阅读逻辑 end -->
+				<!-- 红包分享 begin -->
+				#set($redpacket=$dataTools.getProperty($entity,"redpacket_share"))
+				#if($redpacket && $redpacket!="" && $redpacket=="1")
+				<style>
+					.ws-wxact-tip,.ws-act-tip{display: none;}
+	        .ws-wxact-tip img,.ws-act-tip img{width:100%;}
+	        .ws-wx-mask{width:100%;height:100%;position:fixed;top:0;left:0;z-index:9999;background:rgba(0,0,0,0.8) url(//file.caixin.com/file/mobile/kuaixun/images/share-tip.png) 0 0 no-repeat;background-size:100% auto;display:none;}
+	        .ws-wxact-text{line-height: 24px;font-size: 14px;padding: 10px 5%;}
+	      </style>
+				<div class="ws-wxact-tip">
+					<img src="//file.caixin.com/images/ws-wxact-banner.jpg">
+					<div class="ws-wxact-text">【红包说明】：<br>1、在微信中打开文章后，即可通过微信分享送出阅读红包（在Wap浏览器中暂无法直接分享送红包）
+						<br>2、每位用户在每篇文章中仅有一次发红包机会。<br>3、每个红包可送五个人。</div>
+				</div>
+				<div class="ws-act-tip">
+					<img src="//file.caixin.com/images/ws-act-banner.jpg">
+					<div class="ws-wxact-text">【红包说明】：<br>1、在微信中打开文章后，即可通过微信分享送出阅读红包（在wap浏览器中暂无法直接分享送红包）
+						<br>2、每位用户在每篇文章中仅有一次发红包机会。<br>3、每个红包可送五个人。</div>
+				</div>
+				<div class="ws-wx-mask"></div>
+				<script>
+					$(".ws-wxact-tip").on('click', function() {
+						$(".ws-wx-mask").fadeIn('200', function() {
+							setTimeout(function() {
+								$(".ws-wx-mask").fadeOut('200');
+							}, 3000)
+						});
+					})
+				</script>
+				#end
+				<!-- 红包分享 end -->
+				<div class="page" id="pageNext">
+					#if($pagenum > 1 && $thepage < $pagenum) #parse("/frag/news_turnpage_v2.inc") #end </div> #set($newEdit=$dataTools.getEditor($entity))
+					 <span class="edit">
+						</span>
+						#if($tags&&$tags.size()>0)
+						<div class="news-tag">
+							<div class="news-tag-icon"></div>
+							<ul class="news-tag-list">
+								#foreach( $tag in $tags)
+								<li><a href="http://tag.caixin.com/tag/$tag" target="_self">$tag</a></li>
+								#end
+							</ul>
+						</div>
+						#end
+						<!-- 预留广告位 begin -->
+						#if($subject.id!= 101368000)
+						<!--\#include virtual="/frag/mobile_newsad_yuliu0_mob.inc"-->
+						#end
+						<!-- 预留广告位 end -->
+						#if($entity.pid == 100868265)
+						<!--\#include virtual="/commonfrag/100868265/lanmu_textend.inc"-->
+						#end
+						<!-- 赞赏 begin -->
+						<div class="zan_box02">
+							<div class="zan_bg02"></div>
+							<p>#if($stringUtils.isNotBlank($editor))
+								责任编辑：$!editor
+								#end
+								<br /> 版面编辑：$!newEdit
+							</p>
+							#set($is_appreciate=$dataTools.getProperty($entity,"is_appreciate"))
+							#if($is_appreciate && $is_appreciate!="" && $is_appreciate=="1")
+							#set($appreciatefrag="/frag/appreciateFrag/${entityid}_new.inc")
+							<!--\#include virtual="$appreciatefrag" -->
+							#end
+						</div>
+						<!-- 赞赏 end -->
+						<!-- 预留广告位 begin -->
+						<!--\#include virtual="/frag/mobile_newsad_yuliu1_mob.inc"-->
+						<!-- 预留广告位 end -->
+						<!-- 预留广告位 begin -->
+						<!--\#include virtual="/frag/mobile_newsad_yuliu2_mob.inc"-->
+						<!-- 预留广告位 end -->
+						<div class="other-con">
+							#set($topicUrls=$dataTools.getProjectUrls($entity))
+							<!--专题 begin-->
+							#if($topicUrls.size()>0)
+							<div class="zhuanti-box">
+								<dl class="clear">
+									<dt>专题</dt>
+									<dd><a href="$topicUrls.get(0).get(0)">$topicUrls.get(0).get(1)</a></dd>
+								</dl>
+							</div>
+							#end
+							<!--专题 end-->
+							<!--英文 begin-bb-->
+							<div class="xgyd-box">
+
+								#set($relatedNewsList=$T.getForeignNewsList($entity))
+								#if($relatedNewsList.size()>0)
+								<div class="tit">阅读英文报道</div>
+								#end
+								#foreach($item in $relatedNewsList)
+								<dd>
+									<p><a href="$item.url">$item.desc</a></p>
+									<span>$dataTools.getFormatDateTime($item.time,"yyyy年MM月dd日")</span>
+								</dd>
+								#end
+							</div>
+							<!--英文 e-->
+							<!--相关新闻B-->
+							#if($dataTools.isNotEmpty($pipnews))
+							<div class="xgyd-box">
+								<div class="tit">相关阅读</div>
+								#set($tmpCount = 0)
+								#foreach($tmpNews in $pipnews)
+								#set($picshow2=$T.newsPicture($tmpNews.id))
+								#if($tmpCount < 10) #set($tmpLink=$dataTools.makeDomain($tmpNews.url,$linkhead,$linktree,$linktail)) <dl>
+									#if($picshow2 && $picshow2.url)
+									<dt><a href="$tmpNews.url"><img src="$!picshow2.url" /></a>
+										#if($dataTools.isHasVideo($tmpNews))
+										<em class="video"></em>
+										#end
+									</dt>
+									#end
+									<dd>
+										<p><a href="$tmpLink">
+												$tmpNews.desc
+												#if($dataTools.isCharge($tmpNews))
+												<em class="key-icon"></em>
+												#end
+
+												#if($dataTools.isHasVideo($tmpNews))
+												<em class="video-icon"></em>
+												#elseif($dataTools.isHasAudio($tmpNews))
+												<em class="sound-icon"> </em>
+												#end
+
+												#if($dataTools.isZutu($tmpNews))
+												<em class="photo-icon"></em>
+												#elseif($dataTools.isHasZutu($tmpNews))
+												<em class="photos-icon"></em>
+												#end
+											</a>
+										</p>
+										<span>$dataTools.getFormatDateTime($tmpNews.time,"yyyy年MM月dd日")</span>
+									</dd>
+									</dl>
+									#end
+									#set($tmpCount = $tmpCount + 1)
+									#end
+							</div>
+							#end
+							<!--相关新闻E-->
+							<!-- 广告位 B-->
+							<!--\#include virtual="/frag/mobile_newsad1_mob.inc"-->
+							<!-- 广告位 E-->
+							#if($entity.channel != 176)
+							<!--新媒体试验群B-->
+							<!--
+   <!--\#include virtual="/frag/mobile_newmedia_mob.inc"-->
+							-->
+							<!--新媒体试验群E-->
+							#end
+							<!-- 编辑推荐 Start-->
+							<div class="tjyd-box">
+								<div class="tit">推荐阅读</div>
+								<!-- 四宫格 Start-->
+								<!--\#include virtual="/commonfrag/newscontent_tj_4palace.inc"-->
+								<!-- 四宫格 end-->
+								<!-- 预留广告位 B -->
+								<!--\#include virtual="/frag/mobile_newsad_yuliu1_mob.inc"-->
+								<!-- 预留广告位 E -->
+								<!-- 三条可维护 Start-->
+								<!--\#include virtual="/commonfrag/newscontent_tj_3news.inc"-->
+								<!-- 三条可维护 End-->
+								<!-- 三条首页提取，广告插入在第一条后边 -->
+								<!--\#include virtual="/frag/newscontent_tj_index_news.inc"-->
+								<!-- 三条首页提取，广告插入在第一条后边 End-->
+							</div>
+							<!--  编辑推荐 end  -->
+						</div>
+						<!--财新移动B  首页共用-->
+						<!--\#include virtual="/frag/mobile_wwwheadV2.0_caixinyidong.inc"-->
+						<!--财新移动E-->
+						<!-- 热词推荐 Start-->
+						#set($seoLink="/seo_data/links_${entityid}_m.inc")
+						<!--\#include virtual="$seoLink" -->
+						<!-- 热词推荐 end-->
+						<!-- foot begin 首页共用  -->
+						<!--\#include virtual="/frag/mobile_wwwheadV2.0_tail.inc"-->
+						<!-- foot end -->
+						<!--\#include virtual="/frag/mobile_analytics.inc" -->
+				</div>
+				<!--body 预留碎片 B-->
+				<!--\#include virtual="/frag/mobile_body_yuliu_mob.inc"-->
+				<!--body 预留碎片 E-->
+				<div id="confirmDiv" style="display: none">
+					<div class="bg"></div>
+					<div class="popup">
+						<p id="confirmTit"></p>
+						<p>
+							<a id="confirmYes" class="btn1" href="javascript:void(0);" target="_self">确定</a> <a id="confirmNot" class="btn2"
+							 href="javascript:void(0);" target="_self">取消</a>
+						</p>
+					</div>
+				</div>
+				<!-- 底部常驻框  弹框相关begin -->
+				<!--\#include virtual="/frag/mobile_artothers_mobv2.0.inc" -->
+				<!-- 底部常驻框  弹框相关end  -->
+				<!-- app B  -->
+				<!--\#include virtual="/frag/mobile_artapp_mobv2.0.inc" -->
+				<!-- app E  -->
+				<!-- 第三方合作begin -->
+				<script type="text/javascript">
+					var curUrl = location.href;
+					//qq browser
+					if (curUrl.indexOf("QQbrowser") > 0) {
+						$(".back").remove();
+						$(".caixin-app").remove();
+						$(".foot").remove();
+						$(".top-box").remove();
+					}
+				</script>
+				<!-- 第三方合作end -->
+				<!-- 微信分享成功推荐新闻 begin-->
+				<div class="share-pop-mask">
+					<div class="share-pop-box">
+						<div class="s-p-head"><span>　分享成功</span>
+							<div class="s-p-close"></div>
+						</div>
+						<div class="s-p-list">
+							<div class="s-p-title">相关文章</div>
+							<ul id="relateNews"></ul>
+							<div class="s-p-title">大家正在看</div>
+							<ul id="djk">
+								<!--\#include virtual="/frag/m-news-share-djk.inc"-->
+							</ul>
+						</div>
+					</div>
+				</div>
+				<script>
+					// 点击关闭按钮和阴影部分关闭弹出框
+					$(".share-pop-mask,.s-p-close").click(function() {
+						$(".share-pop-mask").hide();
+					});
+					$(".share-pop-box").click(function(e) {
+						e.stopPropagation()
+					});
+
+					function initShare() {
+						initParam("#djk", "a", 2, "href", "?sourceEntityId=" + entity.id);
+						initParam("#news-related-list", "a", 2, "href", "?sourceEntityId=" + entity.id);
+						copyElement();
+					}
+
+					function copyElement() {
+						var size = $("#news-related-list li");
+						for (var i = 0; i < 2; i++) {
+							$("#relateNews").append($("#news-related-list li").eq(i).clone());
+						}
+					}
+
+					function initParam(elementId, tag, size, attr, tongji) {
+						for (var i = 0; i < size; i++) {
+							$(elementId + " " + tag).eq(i).attr(attr, $(elementId + " " + tag).eq(i).attr(attr) + tongji);
+						}
+					}
+				</script>
+				<!-- 微信分享成功推荐新闻 end-->
+				<!-- 组图DIV start-->
+				#if($picObjects.size()>1)
+				<div style="display:none" class="pop-photos">
+					<!-- photos only style begin -->
+					<div style="display: none;" class="photo-style">
+					</div>
+					<!-- photos only style end -->
+					<link href="//file.caixin.com/file/content/css/mobile_news_photos_t.css" rel="stylesheet">
+					<div class="photo">
+						<div class="swiper-container">
+							<div class="swiper-wrapper">
+								#foreach($pic in $picObjects)
+								<div class="swiper-slide">
+									<div class="photos">
+										#if($stringUtils.isNotBlank($pic.desc) && $pic.desc!="null" && $pic.desc!="picture" )
+										<img alt="$pic.desc" src="$dataTools.getNewSizeForPicUrl($pic.url," _480_320")">
+										#else
+										<img src="$dataTools.getNewSizeForPicUrl($pic.url," _480_320")">
+										#end
+									</div>
+								</div>
+								#end
+								<!--推荐图集-->
+								<!--\#include virtual="/frag/m-photos-last.inc"-->
+								<!-- 推荐图集 end -->
+							</div>
+							<div class="news-link"></div>
+							<a href="#" class="original">原图</a>
+							<div class="headline">
+								<h1 class="title">${title}</h1>
+								<p class="description"></p>
+								<div class="num"><span class="now">1</span>/<span class="total"></span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				#end
+				<!-- 组图DIV　end  -->
+	</body>
+	<!-- 收费引用js11 -->
+	<script src="//file.caixin.com/webchannel/all/js/md5.js"></script>
+	<script src="//file.caixin.com/webjs/content/share_m1.js"></script>
+	<script src="//file.caixin.com/webjs/comment/comment_for_mob_v2_news.js"></script>
+	<script src="//file.caixin.com/webjs/common/m_jour_contact.js"></script>
+	<script src="//file.caixin.com/webjs/common/jour_json_data.js"></script>
+	<script src="//file.caixin.com/webjs/comment/count_comment.js"></script>
+	<script src="//file.caixin.com/wapchannel/all/js/common.js"></script>
+	<script src="//file.caixin.com/file/content/js/cons_other_function.js"></script>
+	<!-- 防复制 -->
+	#if($entityid==101215246)
+	<script>
+		document.oncontextmenu = function() {
+			return false
+		};
+		document.oncopy = function() {
+			return false
+		};
+		document.onselectstart = function() {
+			return false
+		};
+	</script>
+	#end
+	#if($attr>=4 && $attr<=5) <!--\#include virtual="/frag/mobile_qzsh_tongji.inc" -->
+		#end
+		$T.prop($entity,'content_script','')
+</html>
