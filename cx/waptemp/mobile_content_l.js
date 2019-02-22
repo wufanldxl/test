@@ -44,7 +44,28 @@ $(function () {
         }).show();
         $('header').css({'background': '#242424', border: 'none'})
     }
+	
+	//尾部登录状态切换
+	var thurl = base64encode(base64encode(window.location.href));
+	if (cxuid && cxname) {
+		$('.bottomuser').html('<a href="http://u.caixin.com/m/userinfo.html" target="_self">用户中心　</a>');
+	} else {
+		$('.bottomuser').attr('id','bottomLoginBt').text('登录')
+	}
+	
+	$(".news-login").click(function() {
+		openLoginBox();
+	});
 });
+
+//tool
+function fmtDate(obj) {
+	var date = new Date(obj);
+	var y = 1900 + date.getYear();
+	var m = "0" + (date.getMonth() + 1);
+	var d = "0" + date.getDate();
+	return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
+}
 
 //AD
 
