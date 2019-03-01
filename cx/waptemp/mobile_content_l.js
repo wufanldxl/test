@@ -1,9 +1,16 @@
+//一些全局的
 var cxuid = GetCookieValue("SA_USER_UID");
 var cxname = GetCookieValue("SA_USER_NICK_NAME");
 var wbuid = GetCookieValue("SA_USER_weibouser[uid]");
 var wbname = GetCookieValue("SA_USER_weibouser[name]");
+var sUserAgent = navigator.userAgent.toLowerCase();
+
+function isFromApp() {
+	return !!GetCookieValue("appType");
+}
 
 $(function () {
+	//一些需要获取dom的
     addMagazineJourContact("author");
     addCommJourContact("Main_Content_Val", "strong");
     addCommJourContact('Main_Content_Val', 'b');
@@ -56,6 +63,30 @@ $(function () {
 	$(".news-login").click(function() {
 		openLoginBox();
 	});
+	
+	
+	
+	/*增加客户端删除提示操作start*/
+
+	if (isFromApp()) {
+		SetCookieValue("TIP_BOX_COUNT", 3);
+		SetCookieValue("SHOW_TIP_BOX", '1');
+	}
+	/*增加客户端删除提示操作end*/
+	if (sUserAgent.indexOf("iphone os") > 0) {
+		var value = GetCookieValue("SHOW_TIP_BOX");
+		var count = GetCookieValue("TIP_BOX_COUNT");
+		var c = 0;
+		if (count != '') {
+			c = parseInt(count);
+		}
+		if (value == '' && c < 3) {
+			document.cookie = "SHOW_TIP_BOX=1;path=/;domain=.caixin.com";
+			$(".addBox").show();
+			c++;
+			SetCookieValue("TIP_BOX_COUNT", "" + c);
+		}
+	}
 });
 
 //tool

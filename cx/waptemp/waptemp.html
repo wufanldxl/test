@@ -814,38 +814,6 @@
 				</div>
 				<span class="exit" onclick="$('.addBox').hide()"></span>
 			</div>
-			<script>
-				var sUserAgent = navigator.userAgent.toLowerCase();
-
-				/*增加客户端删除提示操作start*/
-				function isFromApp() {
-					var fromApp = true;
-					if (typeof GetCookieValue("appType") == 'undefined' || GetCookieValue("appType").length < 1) {
-						fromApp = false;
-					}
-					return fromApp;
-				}
-
-				if (isFromApp()) {
-					SetCookieValue("TIP_BOX_COUNT", 3);
-					SetCookieValue("SHOW_TIP_BOX", '1');
-				}
-				/*增加客户端删除提示操作end*/
-				if (sUserAgent.indexOf("iphone os") > 0) {
-					var value = GetCookieValue("SHOW_TIP_BOX");
-					var count = GetCookieValue("TIP_BOX_COUNT");
-					var c = 0;
-					if (count != '') {
-						c = parseInt(count);
-					}
-					if (value == '' && c < 3) {
-						document.cookie = "SHOW_TIP_BOX=1;path=/;domain=.caixin.com";
-						$(".addBox").show();
-						c++;
-						SetCookieValue("TIP_BOX_COUNT", "" + c);
-					}
-				}
-			</script>
 			<script language="javascript" src="//file.caixin.com/webjs/layer/layer.js"></script>
 			<script language="javascript" src="//file.caixin.com/wapchannel/login/js/login-pop.js"></script>
 
