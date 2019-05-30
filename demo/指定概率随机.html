@@ -50,9 +50,9 @@
 	                console.error('repeat为false时，prob概率大于0的个数必须多于或等于cont')
 	                return null
 	            }else{
-	                let sumProb=prob?(new Function('return '+prob.join('+')))():null;
+	                let sumProb=prob?(new Function('return '+prob.map(function(c){return c*100}).join('+')))():null;
 	                
-	                if(sumProb!==1){
+	                if(sumProb!==100){
 	                    console.error(sumProb,'概率总和必须是1')
 	                    return null
 	                }else{
@@ -100,14 +100,14 @@
 	        }
 	        
 	        
-	        let arr=['abc',11,'ccc','ddd'];
+	        let arr=['abc',11,'ccc','ddd','hyffcfc'];
              
-            let prob=[0.7,0.1,0.1,0.1]
+            let prob=[0.69,0.1,0.1,0.1,0.01]
 	        
 	        let n=mr({
 	            target:arr,
 	            prob,
-	            cont:10,
+	            cont:100,
 	            repeat:true
 	        });
 	        
