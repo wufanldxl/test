@@ -25,8 +25,53 @@
         <div class="time">00:00:00</div>
         
         <script type="text/javascript">
-            let usetime=prompt('输入你的下班时间：', '18:00:00');
-            
+			//cookie
+			function addCookie(sName,sValue,iDay){
+			    if(iDay){
+			        var oDate = new Date();
+			        oDate.setDate(oDate.getDate()+iDay);
+			        document.cookie=sName+'='+sValue+'; PATH=/; EXPIRES='+oDate.toGMTString();
+			    }else{
+			        document.cookie=sName+'='+sValue+'; PATH=/';
+			    }
+			}
+			
+			function getCookie(sName){
+			    var arr = document.cookie.split('; ');    
+			    if(sName){
+			        for(var i=0;i<arr.length;i++){
+			            var arr2 = arr[i].split('=');        
+			            if(arr2[0]==sName){
+			                return arr2[1];
+			            } 
+			        }
+					return null
+			    }else{
+			        var json={};
+			        for(var i=0;i<arr.length;i++){
+			            var arr2 = arr[i].split('=');
+			            json[arr2[0]]=arr2[1];
+			        } 
+			        return json;
+			    }
+			}
+			
+			function removeCookie(sName){
+			    addCookie(sName,1,-1);
+			}
+			
+			
+			let usetime
+			if(getCookie('time')){
+				usetime=getCookie('time');
+			}else{
+				usetime=prompt('输入你的下班时间：', '18:00:00');
+				usetime=usetime?usetime:'18:00:00';
+				let save=confirm('是否保存下班时间？');
+				if(save){
+					addCookie('time',usetime,7)
+				}
+			}
             
             let xb=new Date()
             let uta=usetime.split(':')
