@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+        <style type="text/css">
+            .time{
+                text-align: center;
+                font-size: 80px;
+                font-family: 黑体;
+                font-weight: 800;
+            }
+            .img{
+                text-align: center;
+                vertical-align: top;
+            }
+            img{
+                max-width: 100%;
+            }
+        </style>
+	</head>
+	<body>
+        <div class="img"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2376619390,2407627054&fm=15&gp=0.jpg" alt=""></div>
+        <div class="time">00:00:00</div>
+        
+        <script type="text/javascript">
+            let xb=new Date()
+            xb.setHours(18,0,0)
+            
+            let now=new Date();
+            let cd=parseInt((xb.getTime()-now.getTime())/1000);
+            
+            function todou(s){
+                return s>=10?s:('0'+s)
+            }
+            
+            function showTime(){
+                if(cd<=0){
+                    document.querySelector('.time').innerText='下班啦！！！'
+                    document.querySelector('.img img').src='https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3558647110,4075174335&fm=26&gp=0.jpg'
+                }else{
+                    let s=cd
+                    let h=parseInt(s/3600)
+                    s=s%3600
+                    let m=parseInt(s/60)
+                    s=s%60
+                    document.querySelector('.time').innerText=`${todou(h)}:${todou(m)}:${todou(s)}`;
+                }
+                
+            }
+            
+            if(now.getHours()>=9){
+                showTime()
+                let ct=setInterval(function(){
+                    cd--
+                    showTime()
+                    if(cd<=0){
+                        clearInterval(ct);
+                    }
+                },1000)
+            }
+            
+        </script>
+	</body>
+</html>
