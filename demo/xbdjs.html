@@ -25,8 +25,17 @@
         <div class="time">00:00:00</div>
         
         <script type="text/javascript">
+            let usetime=prompt('输入你的下班时间：', '18:00:00');
+            
+            
             let xb=new Date()
-            xb.setHours(18,0,0)
+            let uta=usetime.split(':')
+            if(uta.length===3){
+               xb.setHours(parseInt(uta[0]),parseInt(uta[1]),parseInt(uta[2]))
+            }else{
+                xb.setHours(18,0,0)
+            }
+            
             
             let now=new Date();
             let cd=parseInt((xb.getTime()-now.getTime())/1000);
