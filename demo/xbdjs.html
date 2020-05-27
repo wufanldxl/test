@@ -45,7 +45,7 @@
             }
             
             function showTime(){
-                if(cd<=0){
+                if(cd<=0||now.getHours()<9){
                     document.querySelector('.time').innerText='下班啦！！！'
                     document.querySelector('.img img').src='https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3558647110,4075174335&fm=26&gp=0.jpg'
                 }else{
@@ -58,9 +58,8 @@
                 }
                 
             }
-            
+            showTime()
             if(now.getHours()>=9){
-                showTime()
                 let ct=setInterval(function(){
                     cd--
                     showTime()
