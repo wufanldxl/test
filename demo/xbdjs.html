@@ -93,7 +93,7 @@
                 if(cd<=0||now.getHours()<9){
                     document.querySelector('.time').innerText='下班啦！！！'
                     document.querySelector('.img img').src='https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3558647110,4075174335&fm=26&gp=0.jpg'
-                }else if(cd<=gotime){
+                }else if(cd<=gotime&&cd>0){
                 document.querySelector('.img img').src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590667842612&di=bec777ca6f9609f53b2d37753dbcf5f7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201803%2F11%2F20180311011136_4czdS.thumb.700_0.gif'
                 }else{
                     let s=cd
@@ -115,7 +115,7 @@
                     if(cd<=0){
                         clearInterval(ct);
                     }
-                    if(cd<=gotime){
+                    if(cd<=gotime&&cd>0){
                         document.querySelector('.img img').src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590667842612&di=bec777ca6f9609f53b2d37753dbcf5f7&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201803%2F11%2F20180311011136_4czdS.thumb.700_0.gif'
                         clearInterval(ct);
                         cd=cd*100
@@ -127,6 +127,10 @@
                             let s=parseInt(ms/100)
                             ms=ms%100
                             document.querySelector('.time').innerText=`${todou(m)}:${todou(s)}:${todou(ms)}`;
+                            
+                            if(cd<=0){
+                                clearInterval(ct);
+                            }
                         },10)
                     }
                 },i)
