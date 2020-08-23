@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>a document</title>
+    <style>
+        * {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            width: 480px;
+            height: 260px;
+            margin: 200px auto;
+            position: relative;
+        }
+
+        ul li {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-transform: perspective(800px) translateX(0px) rotateY(0deg);
+            transform: perspective(800px) translateX(0px) rotateY(0deg);
+            -webkit-transition: .5s all ease;
+            transition: .5s all ease;
+            opacity: 0;
+        }
+
+        ul .l2 {
+            -webkit-transform: perspective(800px) translateX(-400px) rotateY(60deg);
+            transform: perspective(800px) translateX(-400px) rotateY(60deg);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        ul .l {
+            -webkit-transform: perspective(800px) translateX(-300px) rotateY(60deg);
+            transform: perspective(800px) translateX(-300px) rotateY(60deg);
+            z-index: 2;
+            opacity: 1;
+        }
+
+        ul .cur {
+            z-index: 3;
+            opacity: 1;
+        }
+
+        ul .r {
+            -webkit-transform: perspective(800px) translateX(300px) rotateY(-60deg);
+            transform: perspective(800px) translateX(300px) rotateY(-60deg);
+            z-index: 2;
+            opacity: 1;
+        }
+
+        ul .r2 {
+            -webkit-transform: perspective(800px) translateX(400px) rotateY(-60deg);
+            transform: perspective(800px) translateX(400px) rotateY(-60deg);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        ul li span {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 270px;
+            -webkit-transform: scaleY(-1);
+            transform: scaleY(-1);
+            opacity: 0.3;
+            -webkit-mask: -webkit-linear-gradient(rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 1));
+        }
+
+        .btns {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var oBtn1 = document.getElementById('btn1');
+            var oBtn2 = document.getElementById('btn2');
+            var oUl = document.getElementById('ul1');
+            var aLi = oUl.children;
+            for (var i = 0; i < aLi.length; i++) {
+                var oS = document.createElement('span');
+                oS.style.background = 'url(' + aLi[i].children[0].src + ')'
+                aLi[i].appendChild(oS)
+            }
+            var iNow = 2;
+            var ready = true;
+            /*
+            now-2	->	l2
+            now-1	->	l
+            now		->	cur
+            now+1	->	r
+            now+2	->	r2
+            */
+            function mo(n) {
+                if (n > 0) {
+                    return n % aLi.length;
+                } else {
+                    return (n % aLi.length + aLi.length) % aLi.length
+                }
+            }
+
+            function tab() {
+                for (var i = 0; i < aLi.length; i++) {
+                    aLi[i].className = '';
+                }
+                aLi[mo(iNow - 2)].className = 'l2';
+                aLi[mo(iNow - 1)].className = 'l';
+                aLi[mo(iNow)].className = 'cur';
+                aLi[mo(iNow + 1)].className = 'r';
+                aLi[mo(iNow + 2)].className = 'r2';
+
+                function end() {
+                    ready = true;
+                    aLi[mo(iNow)].removeEventListener('transitionend', end, false)
+                }
+                aLi[mo(iNow)].addEventListener('transitionend', end, false)
+            }
+            oBtn1.onclick = function () {
+                next()
+            };
+
+            function next() {
+                if (ready == false) return;
+                ready = false;
+                iNow++;
+                tab();
+            }
+            oBtn2.onclick = function () {
+                if (ready == false) return;
+                ready = false;
+                iNow--;
+                tab();
+            };
+            setInterval(next, 3000);
+
+
+        }, false)
+    </script>
+</head>
+
+<body>
+
+    <ul id="ul1">
+        <li class="l2"><img src="img/1.jpg" /></li>
+        <li class="l"><img src="img/2.jpg" /></li>
+        <li class="cur"><img src="img/3.jpg" /></li>
+        <li class="r"><img src="img/4.jpg" /></li>
+        <li class="r2"><img src="img/5.jpg" /></li>
+        <li><img src="img/6.jpg" /></li>
+        <li><img src="img/7.jpg" /></li>
+        <li><img src="img/8.jpg" /></li>
+        <li><img src="img/9.jpg" /></li>
+        <li><img src="img/10.jpg" /></li>
+        <li><img src="img/11.jpg" /></li>
+        <li><img src="img/12.jpg" /></li>
+
+    </ul>
+    <div class="btns">
+        <input type="button" value="上一个" id="btn2" />
+        <input type="button" value="下一个" id="btn1" />
+    </div>
+
+</body>
+</html>
