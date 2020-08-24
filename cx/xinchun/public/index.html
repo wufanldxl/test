@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <script src="https://file.caixin.com/webjs/wap/flexible.js"></script>
+    <title>上财新 摇好礼</title>
+</head>
+<body>
+    <noscript>
+        <strong>请开启javascript功能，以浏览此页面</strong>
+    </noscript>
+    <div id="app"></div>
+    <div style="display:none" id="__cxnewsapp_topbar">分享</div>
+    <div style="display:none" id="__cxnewsapp_orientation"></div>
+    <div style="display:none" id="__cxnewsapp_sharetext">上财新摇一摇，大年三十起，连续7天，海量好礼等你来摇！(*^▽^*)更有机会摇到财新全年免费阅读权限和实物大礼。新春摇好礼，戳>></div>
+    <div style="display:none" id="__cxnewsapp_sharephotourl">https://cchuodong.caixin.com/market/xinchun/img/xinchun.jpg</div>
+    <div style="display:none" id="__cxnewsapp_sharewxurl">https://cchuodong.caixin.com/market/xinchun/</div>
+    <div style="display:none" id="__cxnewsapp_sharewxthumburl">https://cchuodong.caixin.com/market/xinchun/img/xinchun.jpg</div>
+    <div style="display:none" id="__cxnewsapp_sharewxtitle">上财新 摇好礼</div>
+    <div style="display:none" id="__cxnewsapp_sharewxtext">摇一摇，好礼非你莫“鼠”</div>
+
+
+    <script src="https://file.caixin.com/webjs/jquery-2.1.3.min.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="https://file.caixin.com/webjs/get_wx_config.js"></script>
+    <!--<script src="https://file.caixin.com/webjs/layer/layer.js"></script>-->
+
+
+    <script>
+        function getCookie(name) {
+            var arr,
+                reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)');
+            if ((arr = document.cookie.match(reg))) {
+                return decodeURIComponent(arr[2])
+            } else {
+                return undefined
+            }
+        };
+    </script>
+    <!--caixin analytics start-->
+    <script type="text/javascript" src="https://files.caixin.com/webjs/common/caixinlog.js"></script>
+    <!--caixin analytics end-->
+    <script type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-27956240-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!-- ulu stats start -->
+    <noscript>
+        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-WLLF3V"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WLLF3V');
+    </script>
+    <!-- ulu stats end -->
+    <script type='text/javascript'>
+        var _vds = _vds || [];
+        var cxuid = getCookie("SA_USER_UID");
+        var cxname = getCookie("SA_USER_NICK_NAME");
+        window._vds = _vds;
+        (function () {
+            _vds.push(['setAccountId', '872f3eaac31f373e']);
+            if (cxuid && cxname) {
+                _vds.push(['setCS1', 'UID', cxuid]);
+            }
+
+            (function () {
+                var vds = document.createElement('script');
+                vds.type = 'text/javascript';
+                vds.async = true;
+                vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(vds, s);
+            })();
+        })();
+    </script>
+    <noscript>
+        <iframe src="//api.growingio.com/nojs/872f3eaac31f373e/pv" height="0" width="0" style="hidden:true;visibility:true"></iframe>
+    </noscript>
+    <script>
+        //艾瑞统计代码 add 20170427
+        (function (G, D, s, c, p) {
+            c = { //监测配置
+                UA: "UA-****-000001", //客户项目编号,由系统生成
+                NO_FLS: 0,
+                WITH_REF: 1,
+                URL: 'https://file.caixin.com/webjs/common/iwt-min.js' //iwt.js的URL位置，请客户自行托管JS文件，只需修改此值
+            };
+            G._iwt ? G._iwt.track(c, p) : (G._iwtTQ = G._iwtTQ || []).push([c, p]), !G._iwtLoading && lo();
+
+            function lo(t) {
+                G._iwtLoading = 1;
+                s = D.createElement("script");
+                s.src = c.URL;
+                t = D.getElementsByTagName("script");
+                t = t[t.length - 1];
+                t.parentNode.insertBefore(s, t);
+            }
+        })(this, document);
+    </script>
+    <script>
+        !function (e, t, n, g, i) {
+            e[i] = e[i] || function () {
+                (e[i].q = e[i].q || []).push(arguments)
+            }, n = t.createElement("script"), tag = t.getElementsByTagName("script")[0], n.async = 1, n.src = (
+                'https:' == document.location.protocol ? 'https://' : 'http://') + g, tag.parentNode.insertBefore(
+                n, tag)
+        }(window, document, "script", "assets.growingio.com/2.1/gio.js", "gio");
+        gio('init', '872f3eaac31f373e', {
+            'setImp': 'false'
+        });
+        gio('send');
+
+
+        initPlayer({
+            url:'',     //视频地址
+            poster:'',  //占位图
+            container:'',   //自定义的容器 （原生Dom对象）
+            isLive:false
+        })
+
+    </script>
+    <noscript>
+        <iframe src="//api.growingio.com/nojs/872f3eaac31f373e/pv" height="0" width="0"  style="hidden:true;visibility:hidden"></iframe>
+    </noscript>
+</body>
+</html>
