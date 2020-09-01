@@ -67,7 +67,7 @@
             <div class="my_prize_con">
                 <p class="tit">我的奖品</p>
                 <ul v-if="MyPrizeList.length">
-                    <li v-for="item in MyPrizeList">{{item.optionName}}</li>
+                    <li v-for="(item,i) in MyPrizeList" :key="i">{{item.optionName}}</li>
                 </ul>
                 <p v-if="MyPrizeList.length == 0" class="tit" style="margin-top: 2rem;">抱歉，您还未获得奖品。</p>
             </div>
