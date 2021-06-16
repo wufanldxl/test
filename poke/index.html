@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>剑/盾宝可梦能力检索</title>
+    <script src="js/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" />
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="js/axios.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app">
+        <el-row :gutter="20" style="margin-bottom:20px;width: 100%;">
+            <el-col :span="4">
+                <el-input v-model="searchName" placeholder="按名字搜索" clearable />
+            </el-col>
+        </el-row>
+        <el-table :data="fillterData" stripe border :height="TableHeight">
+            <el-table-column prop="id" label="编号" width="55"></el-table-column>
+            <el-table-column prop="name" label="名字" width="155" align="center">
+                <template slot-scope="scope">
+                    <a :href="'https://wiki.52poke.com/wiki/'+scope.row.name" target="_blank">{{scope.row.name}}</a>
+                </template>
+            </el-table-column>
+            <el-table-column label="属性" :filters="attrFilter" :filter-method='fillterAttr'>
+                <template slot-scope="scope">
+                    <el-tag effect="dark" style="border:none;margin-right: 5px;" v-for="a in scope.row.attr.split(',')"
+                        :color="getColor(a)" disable-transitions>{{a}}</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="hp" label="HP" sortable>
+                <template slot-scope="scope">
+                    <div class="bar bg-hp" :style="{width: (scope.row.hp/252)*100+'%'}">{{scope.row.hp}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="攻击" label="攻击" sortable>
+                <template slot-scope="scope">
+                    <div class="bar bg-atk" :style="{width: (scope.row['攻击']/252)*100+'%'}">{{scope.row['攻击']}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="防御" label="防御" sortable>
+                <template slot-scope="scope">
+                    <div class="bar bg-def" :style="{width: (scope.row['防御']/252)*100+'%'}">{{scope.row['防御']}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="特攻" label="特攻" sortable>
+                <template slot-scope="scope">
+                    <div class="bar bg-matk" :style="{width: (scope.row['特攻']/252)*100+'%'}">{{scope.row['特攻']}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="特防" label="特防" sortable>
+                <template slot-scope="scope">
+                    <div class="bar bg-mdef" :style="{width: (scope.row['特防']/252)*100+'%'}">{{scope.row['特防']}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="速度" label="速度" sortable>
+                <template slot-scope="scope">
+                    <div class="bar bg-speed" :style="{width: (scope.row['速度']/252)*100+'%'}">{{scope.row['速度']}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="总和" label="总和" sortable>
+                <template slot-scope="scope">
+                    <div class="bar bg-def" :style="{width: (scope.row['总和']/(252*6))*100+'%'}">{{scope.row['总和']}}
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+
+
+    <script>
+        // axios.get('./json/poke.json').then(res=>{
+        //     let data=res.data
+        //     let ids=[];
+        //     let r=data.reduce((arr,item)=>{
+        //         if(!ids.includes(item.id)){
+        //             ids.push(item.id);
+        //             arr.push(item)
+        //         }
+        //         return arr
+        //     },[])
+        //     console.log(JSON.stringify(r))
+        // })
+
+
+
+        const app = new Vue({
+            el: document.querySelector('.app'),
+            data: {
+                pokeData: [],
+                poke: [],
+                pokeAtte: [],
+                searchName: '',
+                searchAttr: '',
+                TableHeight: 600,
+                attrList: ['火', '水', '草', '龙', '电', '一般', '格斗', '飞行', '毒', '地面', '岩石', '虫', '幽灵', '钢', '超能力',
+                    '冰', '恶', '妖精'
+                ],
+                
+            },
+            computed: {
+                fillterData() {
+                    return this.pokeData.filter(item => {
+                        return this.searchName ? item.name.indexOf(this.searchName) > -1 : true
+                    })
+                },
+                attrFilter(){
+                    return this.attrList.map(item => ({text:item,value:item}))
+                }
+            },
+            methods: {
+                getJsonData() {
+                    Promise.all([
+                        axios.get('./json/attr.json'),
+                        axios.get('./json/poke.json')
+                    ]).then(res => {
+                        this.pokeAtte = res[0].data
+                        this.poke = res[1].data
+                        this.asData()
+                    })
+                },
+                fillterAttr(value, row) {
+                    return row.attr.indexOf(value) > -1
+                },
+                asData() {
+                    this.pokeData = this.poke.reduce((pokeData, poke) => {
+                        let item = {};
+                        for (const p of this.pokeAtte) {
+                            if (poke.id === p.id) {
+                                Object.assign(item, poke, p)
+                                pokeData.push(item)
+                                break;
+                            }
+                        }
+                        return pokeData
+                    }, [])
+                },
+                getColor(attr) {
+                    switch (attr) {
+                        case '一般':
+                            return '#BBBBAA';
+                        case '火':
+                            return '#FF4422';
+                        case '水':
+                            return '#3399FF';
+                        case '草':
+                            return '#77CC55';
+                        case '电':
+                            return '#FFCC33';
+                        case '格斗':
+                            return '#BB5544';
+                        case '飞行':
+                            return '#6699FF';
+                        case '毒':
+                            return '#AA5599';
+                        case '虫':
+                            return '#AABB22';
+                        case '岩石':
+                            return '#BBAA66';
+                        case '地面':
+                            return '#DDBB55';
+                        case '超能力':
+                            return '#FF5599';
+                        case '冰':
+                            return '#77DDFF';
+                        case '龙':
+                            return '#7766EE';
+                        case '幽灵':
+                            return '#6666BB';
+                        case '恶':
+                            return '#775544';
+                        case '钢':
+                            return '#AAAABB';
+                        case '妖精':
+                            return '#FFAAFF';
+                    }
+                }
+            },
+            created() {
+                this.getJsonData();
+                this.TableHeight = document.documentElement.clientHeight - 100
+            }
+        })
+    </script>
+</body>
+
+</html>

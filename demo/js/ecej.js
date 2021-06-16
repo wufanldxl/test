@@ -33,7 +33,7 @@ function addCookie(sName,sValue,iDay){
     }else{
         document.cookie=sName+'='+sValue+'; PATH=/';
     }
-}document.cookie='act_cookie_openid=fff; PATH=/'
+}
 function getCookie(sName){
     var arr = document.cookie.split('; ');    
     if(sName){

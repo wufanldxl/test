@@ -1,0 +1,22 @@
+.bar{
+    white-space: nowrap;
+    color: #fff;
+}
+.bg-hp{
+    background: #558936;
+}
+.bg-atk{
+    background: #CCBC33;
+}
+.bg-def{
+    background: #B4673D;
+}
+.bg-matk{
+    background: #1A7E8D;
+}
+.bg-mdef{
+    background: #004689;
+}
+.bg-speed{
+    background: #A456D0;
+}
