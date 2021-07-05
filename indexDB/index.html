@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const NAME = 'person';
+        let db;
+        let request = window.indexedDB.open(NAME);
+
+        request.onerror = function (event) {
+            console.log('数据库打开报错');
+        };
+
+        request.onsuccess = function (event) {
+            db = request.result;
+            console.log(112)
+            read()
+            // add()
+            console.log('数据库打开成功');
+        };
+
+        request.onupgradeneeded = function (event) {
+            db = event.target.result;
+            var objectStore;
+            console.log(3333)
+            if (!db.objectStoreNames.contains(NAME)) {
+                objectStore = db.createObjectStore(NAME, {
+                    keyPath: 'id'
+                });
+                objectStore.createIndex('name', 'name', {
+                    unique: false
+                });
+                objectStore.createIndex('email', 'email', {
+                    unique: true
+                });
+                console.log('索引完了')
+            }
+
+        }
+
+        function add() {
+            var request = db.transaction([NAME], 'readwrite')
+                .objectStore(NAME)
+                .add({
+                    id: 1,
+                    name: '张三',
+                    age: 24,
+                    email: '张三@example.com',
+                    // oth:12
+                });
+
+            request.onsuccess = function (event) {
+                console.log('数据写入成功');
+            };
+
+            request.onerror = function (event) {
+                console.log(event.target.error)
+                console.log('数据写入失败');
+            }
+        }
+
+
+        function read() {
+            var transaction = db.transaction([NAME], 'readonly');
+            var store = transaction.objectStore(NAME);
+            // console.log(objectStore)
+            // var request = objectStore.get(1);
+            var index = store.index('name');
+            var request = index.get('张三');
+
+            request.onerror = function (event) {
+                console.log('事务失败');
+            };
+
+            request.onsuccess = function (event) {
+                console.log(request.result)
+                if (request.result) {
+                    console.log('Name: ' + request.result.name);
+                    console.log('Age: ' + request.result.age);
+                    console.log('Email: ' + request.result.email);
+                } else {
+                    console.log('未获得数据记录');
+                }
+            };
+        }
+    </script>
+</body>
+
+</html>
