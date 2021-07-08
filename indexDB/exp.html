@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <iframe id="log" src="./index.html" frameborder="0"></iframe>
+    <script>
+        window.addEventListener('message',function(ev,data){
+            console.log(ev)
+        })
+        document.getElementById('log').onload=(function(){
+            document.getElementById('log').contentWindow.postMessage("主页面消息",'https://127.0.0.1:8086/')
+        })
+         
+    </script>
+</body>
+</html>
