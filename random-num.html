@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: rgb(204 246 214);
+        }
+        .num{
+            margin-top: 30vh;
+            font-size: 80px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 微软雅黑,黑体,simhei,宋体,Arial;
+            color: #000;
+        }
+        li{
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+
+        #btn{
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controler">
+        <ul>
+            <li>最小数：<input type="number" id="min"></li>
+            <li>最大数：<input type="number" id="max"></li>
+            <li>间隔频率（秒）：<input type="number" id="speed"></li>
+            <li><button id="btn">立即更改</button></li>
+        </ul>
+        
+    </div>
+    <div class="num"></div>
+
+    <script>
+        let min = 10;
+        let max = 100;
+        let speed = 2;
+
+        const minInput=document.querySelector('#min');
+        const maxInput=document.querySelector('#max');
+        const speedInput=document.querySelector('#speed');
+        const numBox=document.querySelector('.num')
+
+        function random(n,m){
+            n=parseInt(n)
+            m=parseInt(m)
+            return Math.round(n + Math.random() * (m - n))
+        }
+
+        minInput.value=min;
+        maxInput.value=max;
+        speedInput.value=speed;
+
+        minInput.addEventListener('blur',function(){
+            min=this.value;
+        })
+
+        maxInput.addEventListener('blur',function(){
+            max=this.value;
+        })
+
+        speedInput.addEventListener('blur',function(){
+            speed=this.value;
+        })
+
+        document.querySelector('#btn').addEventListener('click',function(){
+            min=minInput.value;
+            max=maxInput.value;
+            speed=speedInput.value;
+        })
+
+        function action(){
+            const num=random(min,max)
+            numBox.innerHTML=num
+            setTimeout(function(){
+                action()
+            },speed*1000)
+        }
+        action()
+    </script>
+</body>
+</html>
