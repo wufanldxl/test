@@ -18,40 +18,75 @@
             font-size: 80px;
             text-align: center;
             font-weight: bold;
-            font-family: 微软雅黑,黑体,simhei,宋体,Arial;
+            font-family: 微软雅黑, 黑体, simhei, Arial, Helvetica, sans-serif;
             color: #000;
         }
         li{
-            margin-bottom: 10px;
+            padding-bottom: 10px;
             margin-left: 10px;
+        }
+
+        .line{
+            border-bottom: 1px solid #000;
         }
 
         #btn{
             padding: 5px 10px;
+        }
+
+        .next{
+            display: block;
+            width: 100px;
+            height: 34px;
+            margin: 10vh auto;
         }
     </style>
 </head>
 <body>
     <div class="controler">
         <ul>
-            <li>最小数：<input type="number" id="min"></li>
-            <li>最大数：<input type="number" id="max"></li>
-            <li>间隔频率（秒）：<input type="number" id="speed"></li>
+            <li>模式：
+                <select id="mode">
+                    <option value="num" selected>数字</option>
+                    <option value="py">拼音</option>
+                </select>
+            </li>
+
+            <li>最小数（仅数字模式有效）：<input type="number" value="10" id="min"></li>
+            <li>最大数（仅数字模式有效）：<input type="number" value="100" id="max"></li>
+
+            <li>拼音范围（仅拼音模式有效）：
+                <label>韵母注音：<input type="radio" value="yunmu" checked name="pys"></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>拼读：<input type="radio" value="pindu" name="pys"></label>
+            </li>
+            <li>开启手动模式：<input type="checkbox" name="noauto" id="noauto"></li>
+
+            <li>间隔频率（秒）：<input type="number" value="2" id="speed"></li>
+            
             <li><button id="btn">立即更改</button></li>
         </ul>
         
     </div>
     <div class="num"></div>
+    <button class="next">下一个</button>
 
     <script>
         let min = 10;
         let max = 100;
         let speed = 2;
+        let mode = 'num';
+        let noauto = false;
+        let pys = 'yunmu';
+        let timer=null;
 
         const minInput=document.querySelector('#min');
         const maxInput=document.querySelector('#max');
         const speedInput=document.querySelector('#speed');
-        const numBox=document.querySelector('.num')
+        const numBox=document.querySelector('.num');
+        const modeSel=document.querySelector('#mode')
+        const pysSel=document.querySelectorAll('[name=pys]')
+        const noautoSel=document.querySelector('#noauto')
 
         function random(n,m){
             n=parseInt(n)
@@ -59,9 +94,15 @@
             return Math.round(n + Math.random() * (m - n))
         }
 
-        minInput.value=min;
-        maxInput.value=max;
-        speedInput.value=speed;
+        function setOption(){
+            min = minInput.value;
+            max = maxInput.value;
+            speed = speedInput.value;
+            mode = modeSel.value;
+            noauto = noautoSel.checked;
+            pys = document.querySelector('[name=pys]:checked').value
+        }
+        setOption()
 
         minInput.addEventListener('blur',function(){
             min=this.value;
@@ -74,21 +115,79 @@
         speedInput.addEventListener('blur',function(){
             speed=this.value;
         })
-
-        document.querySelector('#btn').addEventListener('click',function(){
-            min=minInput.value;
-            max=maxInput.value;
-            speed=speedInput.value;
+        
+        modeSel.addEventListener('change',function(){
+            mode = this.value;
         })
 
+        noautoSel.addEventListener('change',function(){
+            noauto = this.checked;
+            if(noauto){
+                clearTimeout(timer);
+            }
+        })
+
+        pysSel.forEach(function(el){
+            el.addEventListener('change',function(){
+                pys = document.querySelector('[name=pys]:checked').value
+            })
+        })
+
+        document.querySelector('#btn').addEventListener('click',function(){
+            setOption()
+            clearTimeout(timer);
+            if(!noauto){
+                action()
+            }
+        })
+        
+
+        document.querySelector('.next').addEventListener('click',function(){
+            clearTimeout(timer);
+            action()
+        })
+
+        document.addEventListener('keydown',function(ev){
+            if(ev.keyCode==13){
+                clearTimeout(timer);
+                action()
+            }
+        })
+
+        let yunmu='ā,á,ǎ,à,ō,ó,ǒ,ò,ē,é,ě,è,ī,í,ǐ,ì,ū,ú,ǔ,ù,ǖ,ǘ,ǚ,ǜ,āi,ái,ǎi,ài,ēi,éi,ěi,èi,uī,uí,uǐ,uì,āo,áo,ǎo,ào,ōu,óu,ǒu,òu,iū,iú,iǔ,iù,iē,ié,iě,iè,üē,üé,üě,üè,ēr,ér,ěr,èr,ān,án,ǎn,àn,ēn,én,ěn,èn,īn,ín,ǐn,ìn,ūn,ún,ǔn,ùn,ǖn,ǘn,ǚn,ǜn,ānɡ,ánɡ,ǎnɡ,ànɡ,ēnɡ,énɡ,ěnɡ,ènɡ,īnɡ,ínɡ,ǐnɡ,ìnɡ,ōnɡ,ónɡ,ǒnɡ,ònɡ,zhī,zhí,zhǐ,zhì,chī,chí,chǐ,chì,shī,shí,shǐ,shì,rī,rí,rǐ,rì,zī,zí,zǐ,zì,cī,cí,cǐ,cì,sī,sí,sǐ,sì,yī,yí,yǐ,yì,wū,wú,wǔ,wù,yē,yé,yě,yè,yū,yú,yǔ,yù,yuē,yué,yuě,yuè,yuān,yuán,yuǎn,yuàn,yīn,yín,yǐn,yìn,yūn,yún,yǔn,yùn,yīnɡ,yínɡ,yǐnɡ,yìnɡ';
+
+        let allPinyin='zhi,chi,shi,ri,zi,ci,yi,wu,yu,ye,yue';
+
+        let shengmu='b,p,m,f,d,t,n,l,g,k,h,j,q,x,z,c,s,r,zh,ch,sh,y,w';
+
+        const shuangpin = 'a,ai,an,ang,ao,ba,bai,ban,bang,bao,bei,ben,beng,bi,bian,biao,bie,bin,bing,bo,bu,ca,cai,can,cang,cao,ce,cen,ceng,cha,chai,chan,chang,chao,che,chen,cheng,chi,chong,chou,chu,chua,chuai,chuan,chuang,chui,chun,chuo,ci,cong,cou,cu,cuan,cui,cun,cuo,da,dai,dan,dang,dao,de,dei,den,deng,di,dia,dian,diao,die,ding,diu,dong,dou,du,duan,dui,dun,duo,e,ei,en,eng,er,fa,fan,fang,fei,fen,feng,fiao,fo,fou,fu,ga,gai,gan,gang,gao,ge,gei,gen,geng,gong,gou,gu,gua,guai,guan,guang,gui,gun,guo,ha,hai,han,hang,hao,he,hei,hen,heng,hong,hou,hu,hua,huai,huan,huang,hui,hun,huo,ji,jia,jian,jiang,jiao,jie,jin,jing,jiong,jiu,ju,juan,jue,jun,ka,kai,kan,kang,kao,ke,kei,ken,keng,kong,kou,ku,kua,kuai,kuan,kuang,kui,kun,kuo,la,lai,lan,lang,lao,le,lei,leng,li,lia,lian,liang,liao,lie,lin,ling,liu,lo,long,lou,lu,luan,lue,lun,luo,lv,ma,mai,man,mang,mao,me,mei,men,meng,mi,mian,miao,mie,min,ming,miu,mo,mou,mu,na,nai,nan,nang,nao,ne,nei,nen,neng,ni,nian,niang,niao,nie,nin,ning,niu,nong,nou,nu,nuan,nue,nun,nuo,nü,o,ou,pa,pai,pan,pang,pao,pei,pen,peng,pi,pian,piao,pie,pin,ping,po,pou,pu,qi,qia,qian,qiang,qiao,qie,qin,qing,qiong,qiu,qu,quan,que,qun,ran,rang,rao,re,ren,reng,ri,rong,rou,ru,rua,ruan,rui,run,ruo,sa,sai,san,sang,sao,se,sen,seng,sha,shai,shan,shang,shao,she,shei,shen,sheng,shi,shou,shu,shua,shuai,shuan,shuang,shui,shun,shuo,si,song,sou,su,suan,sui,sun,suo,ta,tai,tan,tang,tao,te,tei,teng,ti,tian,tiao,tie,ting,tong,tou,tu,tuan,tui,tun,tuo,wa,wai,wan,wang,wei,wen,weng,wo,wu,xi,xia,xian,xiang,xiao,xie,xin,xing,xiong,xiu,xu,xuan,xue,xun,ya,yan,yang,yao,ye,yi,yin,ying,yo,yong,you,yu,yuan,yue,yun,za,zai,zan,zang,zao,ze,zei,zen,zeng,zha,zhai,zhan,zhang,zhao,zhe,zhei,zhen,zheng,zhi,zhong,zhou,zhu,zhua,zhuai,zhuan,zhuang,zhui,zhun,zhuo,zi,zong,zou,zu,zuan,zui,zun,zuo';
+
+        const pindu='ā,āi,ǎi,ài,ān,àn,áng,ǎo,ào,bā,bá,bǎ,bà,bái,bǎi,bài,bān,bǎn,bàn,bāng,bǎng,bàng,bāo,báo,bǎo,bào,bēi,běi,bèi,bēn,běn,bèn,bèng,bī,bí,bǐ,bì,biān,biǎn,biàn,biāo,biǎo,bié,bīn,bīng,bǐng,bìng,bō,bó,bo,bǔ,bù,cā,cāi,cái,cǎi,cài,cān,cán,cǎn,càn,cāng,cáng,cāo,cáo,cǎo,cè,céng,chā,chá,chà,chāi,chái,chán,chǎn,chàn,chāng,cháng,chǎng,chàng,chāo,cháo,chǎo,chē,chě,chè,chén,chuǎng,chèn,chēng,chéng,chèng,chī,chí,chǐ,chì,chōng,chóng,chōu,chóu,chǒu,chòu,chū,chú,chǔ,chù,chuān,chuán,chuǎn,chuàn,chuāng,chuáng,chuàng,chuí,chuī,chūn,chún,chǔn,cí,cǐ,cì,cóng,cōng,còu,cū,cù,cuàn,cuī,cuì,cūn,cún,cùn,cuò,dā,dá,dǎ,dà,dāi,dài,dǎi,dān,dǎn,dàn,dāng,dǎng,dàng,dāo,dǎo,dào,dé,de,dēng,děng,dèng,dī,dí,dǐ,dì,diān,diǎn,diàn,diāo,diào,diē,dié,dīng,dìng,dǐng,diu1,dōng,dǒng,dòng,dōu,dòu,dǒu,dū,dú,dǔ,dù,duān,duǎn,duàn,duī,duì,dūn,dùn,duō,duó,duǒ,duò,é,è,ēn,ér,ěr,èr,fā,fá,fǎ,fān,fán,fǎn,fàn,fāng,fáng,fǎng,fàng,fēi,féi,fěi,fèi,fēn,fén,fěn,fèn,fēng,féng,fěng,fèng,fó,fǒu,fū,fú,fǔ,fù,gāi,gǎi,gài,gàn,gān,gǎn,gāng,gǎng,gàng,gāo,gǎo,gào,gē,gé,gě,gè,gěi,gēn,gèng,gēng,gōng,gòng,gǒng,gōu,gǒu,gòu,gū,gǔ,gù,guā,guà,guāi,guǎi,guài,guān,guàn,guǎn,guāng,guǎng,guī,guǐ,guì,gǔn,gùn,guō,guó,guǒ,guò,hā,hái,hǎi,hài,hán,hǎn,hàn,háng,háo,hǎo,hào,hē,hé,hè,hēi,hén,hěn,hèn,héng,hōng,hǒng,hóng,hóu,hǒu,hòu,hū,hú,hǔ,hù,huā,huá,huà,huái,huài,huān,huán,huǎn,huàn,huāng,huáng,huàng,huǎng,huī,huí,huǐ,huì,hūn,hún,hùn,huó,huǒ,huò,jī,jì,jí,jǐ,jiā,jiǎ,jià,jiān,jiǎn,jiàn,jiāng,jiǎng,jiàng,jiāo,jiǎo,jiào,jiē,jié,jiě,jiè,jīn,jǐn,jìn,jīng,jǐng,jìng,jiū,jiǔ,jiù,jū,jú,jǔ,jù,juān,juàn,jué,jiáo,jūn,jùn,kǎ,kāi,kǎi,kān,kǎn,kàn,kāng,káng,kàng,kǎo,kào,kē,ké,kě,kè,kěn,kēng,kōng,kǒng,kòng,kǒu,kòu,kū,kǔ,kù,kuā,kuǎ,kuà,kuài,kuān,kuǎn,kuāng,kuáng,kuàng,kuī,kuí,kuì,kūn,kǔn,kùn,kuò,lā,lǎ,là,lái,lài,lán,lǎn,làn,láng,lǎng,làng,lāo,láo,lǎo,lào,lè,léi,lěi,lèi,lěng,lí,lì,lǐ,liǎng,lián,liǎn,liàn,liáng,liàng,liáo,le,liào,liè,lín,líng,lǐng,lìng,liū,liú,liǔ,liù,lóng,lǒng,lóu,lǒu,lòu,lù,lú,lǔ,lǜ,lǘ,lǚ,luǎn,luàn,lüě,lüè,lún,lùn,luó,luò,mā,má,mǎ,mà,ma,mái,mǎi,mài,mán,mǎn,màn,máng,māo,máo,mào,me,méi,měi,mèi,mén,mèn,méng,měng,mèng,mí,mǐ,mī,mì,mián,miǎn,miàn,miáo,miǎo,miào,miè,mín,mǐn,míng,mìng,mō,mó,mò,móu,mǒu,mǔ,mù,ná,nǎ,nèi,nà,nǎi,nai,nán,náng,náo,nǎo,nào,ne,nèn,néng,ní,nǐ,nì,nián,niàn,niáng,niàng,niǎo,niào,niē,nín,níng,niú,niǔ,nóng,nòng,nú,nǔ,nù,nǚ,nuǎn,nuó,ōu,ǒu,pì,pā,pá,pà,pāi,pái,pai,pān,pán,pàn,pāng,páng,pàng,pāo,pào,páo,pǎo,péi,pèi,pēn,pén,péng,pěng,pèng,pī,pí,pǐ,piàn,piān,piāo,piào,piě,pīn,pín,pǐn,pīng,píng,pō,pó,pò,pōu,pú,pū,pù,pǔ,qī,qí,qǐ,qì,qià,qiān,qián,qiǎn,qiàn,qiāng,qiáng,qiǎng,qiāo,qiáo,qiǎo,qiē,qié,qiě,qiè,qīn,qín,qīng,qíng,qǐng,qìng,qióng,qiū,qiú,qū,qǔ,qú,qù,quān,quán,quǎn,quàn,quē,què,qún,rán,rǎn,rǎng,ràng,ráo,rǎo,rào,rě,rè,rén,rěn,rèn,rēng,réng,rì,róng,róu,ròu,rú,rǔ,rù,ruǎn,ruì,rùn,ruò,sā,sǎ,sāi,sài,sān,sǎn,sàn,sāng,sǎng,sàng,sǎo,sè,sēn,shā,shǎ,shāi,shai,shān,shǎn,shàn,shāng,shang,shǎng,shàng,shāo,sháo,shǎo,shào,shé,shě,shè,shēn,shén,shěn,shèn,shēng,shèng,shéng,shěng,shī,shí,shǐ,shì,shōu,shǒu,shòu,shū,shú,shǔ,shù,shuā,shuǎ,shuāi,shuǎi,shuài,shuān,shuāng,shuǎng,shuí,shuǐ,shuì,shùn,shuō,sòu,sī,sǐ,sì,sōng,sòng,sōu,sū,sú,sù,suān,suàn,suī,suí,suì,sūn,sǔn,suō,suǒ,tā,tǎ,tà,tái,tai,tān,tán,tǎn,tàn,tāng,táng,tǎng,tàng,tāo,táo,tǎo,tào,tè,téng,tī,tí,tǐ,tì,tiān,tián,tiāo,tiáo,tiào,tiē,tiě,tīng,tíng,tǐng,tōng,tóng,tǒng,tòng,tōu,tóu,tòu,tū,tú,tǔ,tù,tuán,tuī,tuǐ,tuì,tūn,tún,tuō,tuó,tuǒ,wá,wā,wǎ,wà,wāi,wai,wān,wán,wǎn,wàn,wāng,wáng,wǎng,wàng,wēi,wéi,wěi,wèi,wēn,wén,wěn,wèn,wēng,wō,wǒ,wò,wū,wú,wǔ,wù,xī,xí,xǐ,xì,xiā,xiá,xià,xiān,xián,xiǎn,xiàn,xiāng,xiáng,xiǎng,xiàng,xuē,xiāo,xiǎo,xiào,xiē,xié,xiě,xiè,xīn,xìn,xīng,xíng,xǐng,xìng,xiōng,xióng,xiū,xiǔ,xiù,xū,xú,xǔ,xù,xuān,xuán,xuǎn,xué,xuě,xuè,xún,xùn,yā,ya,yá,yǎ,yà,yān,yán,yǎn,yàn,yāng,yáng,yǎng,yàng,yāo,yáo,yǎo,yào,yé,yě,yè,yī,yí,yǐ,yì,yīn,yín,yǐn,yìn,yīng,yíng,yǐng,yìng,yòng,yōng,yǒng,yōu,yóu,yǒu,yòu,yú,yǔ,yù,yuān,yuán,yuǎn,yuàn,yuē,yuè,yún,yǔn,yùn,yūn,zá,zāi,zǎi,zài,zán,zàn,zāng,zàng,zāo,zǎo,zào,zé,zéi,zěn,zēng,zèng,zhā,zhá,zhǎ,zhà,zhāi,zhái,zhǎi,zhai,zhān,zhǎn,zhàn,zhāng,zhǎng,zhàng,zhāo,zhǎo,zhào,zhē,zhé,zhě,zhè,zhēn,zhěn,zhèn,zhēng,zhèng,zhěng,zhī,zhí,zhǐ,zhì,zhōng,zhǒng,zhòng,zhōu,zhòu,zhū,zhú,zhǔ,zhù,zhuā,zhuān,zhuǎn,zuàn,zhuāng,zhuàng,zhuī,zhǔn,zhuō,zhuó,zhe,zī,zǐ,zì,zōng,zǒng,zòng,zǒu,zòu,zū,zú,zǔ,zuǐ,zuì,zūn,zuó,zuǒ,zuò';
+
         function action(){
-            const num=random(min,max)
-            numBox.innerHTML=num
-            setTimeout(function(){
+            let inner;
+            if(mode=='num'){
+                inner=random(min,max)
+            }else if(mode='py'){
+                if(pys=='yunmu'){
+                    let arr=yunmu.split(',')
+                    let index=random(0,arr.length-1)
+                    inner=arr[index]
+                }else if(pys=='pindu'){
+                    let arr=pindu.split(',')
+                    let index=random(0,arr.length-1)
+                    inner=arr[index]
+                }
+            }
+            numBox.innerHTML=inner
+
+            if(noauto){return false};
+            timer=setTimeout(function(){
                 action()
             },speed*1000)
         }
         action()
+
     </script>
 </body>
 </html>
